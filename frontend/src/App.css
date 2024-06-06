@@ -1,0 +1,82 @@
+.nav-bar {
+  margin-right: 0px;
+  background-color: #271942;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.left {
+  flex: 1;
+}
+.right {
+  display: flex;
+  align-items: center;
+}
+.logo-image {
+  margin-left: 50px;
+  height: 150px;
+  width: 350px;
+}
+.header-link {
+  margin-right: 20px;
+}
+.styled-part {
+  font-family: "Play", sans-serif;
+  font-weight: 700;
+  font-style: bold;
+  font-size: 50px;
+  color: black;
+}
+.main-div {
+  justify-content: center;
+}
+.main-app {
+  justify-content: center;
+  min-height: 120vh;
+  background-color: #6c63ff;
+}
+.enter-url-css {
+  font-family: "Play", sans-serif;
+  font-weight: 700;
+  font-style: bold;
+  font-size: 75px;
+  color: black;
+  margin-left: 170px;
+}
+.description-section {
+  display: flex;
+  justify-content: center;
+}
+.link-section {
+  display: flex;
+  font-family: "Play", sans-serif;
+  font-weight: 700;
+  font-style: bold;
+  font-size: 75px;
+  color: rgb(255, 255, 255);
+  margin: 80px;
+  margin-right: 50px;
+}
+.my-input {
+  height: 50px;
+  width: 700px;
+  margin-right: 20px;
+  margin-left: 75px;
+}
+.motto-header {
+  font-family: "Play", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 90px;
+  color: #ffffff;
+  margin: 50px;
+}
+.text-details {
+  font-family: "Play", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 23px;
+  color: white;
+  margin: 75px;
+  margin-bottom: 0px;
+}

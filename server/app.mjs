@@ -1,5 +1,5 @@
 import express from "express";
-import { UrlMapperService } from "./shortUrl.js";
+import { UrlMapperService } from "./services/shortUrl.js";
 
 const app = express();
 const urlMapperService = new UrlMapperService();
@@ -26,7 +26,7 @@ app.get("/:id", async (req, res) => {
 app.post("/create-url", async (req, res) => {
   try {
     const url = req.body.url;
-    console.log(url);
+    console.log("URL IS 999" + url);
     const result = await urlMapperService.createURL(url);
     res
       .status(200)

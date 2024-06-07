@@ -11,7 +11,7 @@ export interface NavBarProps {
   children?: React.ReactNode;
 }
 const App: FC = () => {
-  const [nr, setNr] = useState<number>(-1);
+  const [nr, setNr] = useState<String>("");
   async function getCurrentNumber(url: string) {
     await fetch("http://localhost:8080/create-url", {
       method: "POST",
@@ -43,7 +43,7 @@ const App: FC = () => {
         <Button color="dark" size="lg" onClick={() => getCurrentNumber(url)}>
           Get Short URL
         </Button>
-        {nr !== -1 && (
+        {nr !== "" && (
           <div className="link-section ">
             <h1 className="header-link">
               This is your new short URL:

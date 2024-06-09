@@ -50,7 +50,7 @@ In the `frontend/` directory, you can run:
 
 ## Deployment
 
-Refer to `genezio.yaml` for backend deployment configuration. The frontend can be deployed using your preferred static site hosting service (e.g., Netlify, Vercel).
+Refer to `genezio.yaml` for backend deployment configuration. The frontend can be deployed using your preferred static site hosting service.
 
 ## Environment Variables
 

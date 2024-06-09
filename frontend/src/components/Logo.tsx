@@ -1,6 +1,6 @@
 import { FC } from "react";
 import React from "react";
-import { logo } from "./App.tsx";
+import { logo } from "../App.tsx";
 
 export const Logo: FC = () => {
   return (

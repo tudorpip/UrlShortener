@@ -1,4 +1,4 @@
-import { urlMapModel } from "../models/shortUrl";
+import { UrlModel } from "../models/url";
 import { DataTypes, Sequelize } from "sequelize";
 import * as pg from "pg";
 require("dotenv").config();
@@ -9,18 +9,18 @@ export function connectToDatabase(): Sequelize {
     dialect: "postgres",
     dialectModule: pg,
     define: {
-      timestamps: false, // This disables the created_at and updated_at columns
+      timestamps: false,
     },
     dialectOptions: {
       ssl: {
-        require: true, // Use SSL with the 'require' option
+        require: true,
       },
     },
   });
   return sequelize;
 }
 export function initDatabase(sequelize: Sequelize) {
-  urlMapModel.init(
+  UrlModel.init(
     {
       id: {
         type: DataTypes.STRING,
@@ -40,9 +40,10 @@ export function initDatabase(sequelize: Sequelize) {
   );
 }
 export function syncDatabase(sequelize: Sequelize) {
-  urlMapModel.sync();
+  UrlModel.sync();
 }
+
+//Used for testing purposes only, should be removed before production
 export function dropDatabase(sequelize: Sequelize) {
-  console.log(1);
-  urlMapModel.drop();
+  UrlModel.drop();
 }

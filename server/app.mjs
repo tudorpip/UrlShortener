@@ -1,5 +1,6 @@
 import express from "express";
-import { UrlMapperService } from "./services/shortUrl.js";
+import { UrlMapperService } from "./services/urlService.js";
+import serverless from "serverless-http";
 
 const app = express();
 const urlMapperService = new UrlMapperService();
@@ -42,3 +43,4 @@ app.listen(8080, () => {
     "Server is running on port 8080. Check the app on http://localhost:8080"
   );
 });
+export const handler = serverless(app);

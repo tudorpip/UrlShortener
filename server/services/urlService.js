@@ -10,29 +10,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UrlMapperService = void 0;
-const shortUrl_js_1 = require("../models/shortUrl.js");
-const connectDb_1 = require("../db/connectDb");
+const url_js_1 = require("../models/url.js");
+const connectDb_js_1 = require("../db/connectDb.js");
 class UrlMapperService {
     constructor() {
-        const sequelize = (0, connectDb_1.connectToDatabase)();
-        (0, connectDb_1.initDatabase)(sequelize);
-        (0, connectDb_1.syncDatabase)(sequelize);
+        const sequelize = (0, connectDb_js_1.connectToDatabase)();
+        (0, connectDb_js_1.initDatabase)(sequelize);
+        (0, connectDb_js_1.syncDatabase)(sequelize);
     }
     getURL(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield shortUrl_js_1.urlMapModel.findOne({ where: { id: id } });
+            return yield url_js_1.UrlModel.findOne({ where: { id: id } });
         });
     }
     getAllURLs() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield shortUrl_js_1.urlMapModel.findAll();
+            return yield url_js_1.UrlModel.findAll();
         });
     }
     createURL(url) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const uuid = uuidv4();
-                const newUrl = yield shortUrl_js_1.urlMapModel.create({ id: uuid, url: url });
+                const newUrl = yield url_js_1.UrlModel.create({ id: uuid, url: url });
                 return newUrl.id;
             }
             catch (error) {

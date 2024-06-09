@@ -1,7 +1,7 @@
 import { FC } from "react";
 import React from "react";
-import { NavBarProps } from "./App";
-import { Logo } from "./Logo.tsx";
+import { NavBarProps } from "../App";
+import { Logo } from "../components/Logo.tsx";
 
 export const NavBar: FC<NavBarProps> = ({ children }) => {
   return (

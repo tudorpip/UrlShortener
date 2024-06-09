@@ -1,12 +1,12 @@
-import "./App.css";
+import "./assets/css/App.css";
 import { useState } from "react";
 import { Button } from "reactstrap";
 import { FC } from "react";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { NavBar } from "./NavBar.tsx";
-export const logo = require("./GenURL.png") as string;
-const background = require("./undraw_schema.png") as string;
+import { NavBar } from "./components/NavBar.tsx";
+export const logo = require("./assets/images/GenURL.png") as string;
+const background = require("./assets/images/undraw_schema.png") as string;
 export interface NavBarProps {
   children?: React.ReactNode;
 }

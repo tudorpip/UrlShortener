@@ -24,7 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dropDatabase = exports.syncDatabase = exports.initDatabase = exports.connectToDatabase = void 0;
-const shortUrl_1 = require("../models/shortUrl");
+const url_1 = require("../models/url");
 const sequelize_1 = require("sequelize");
 const pg = __importStar(require("pg"));
 require("dotenv").config();
@@ -34,11 +34,11 @@ function connectToDatabase() {
         dialect: "postgres",
         dialectModule: pg,
         define: {
-            timestamps: false, // This disables the created_at and updated_at columns
+            timestamps: false,
         },
         dialectOptions: {
             ssl: {
-                require: true, // Use SSL with the 'require' option
+                require: true,
             },
         },
     });
@@ -46,7 +46,7 @@ function connectToDatabase() {
 }
 exports.connectToDatabase = connectToDatabase;
 function initDatabase(sequelize) {
-    shortUrl_1.urlMapModel.init({
+    url_1.UrlModel.init({
         id: {
             type: sequelize_1.DataTypes.STRING,
             primaryKey: true,
@@ -64,11 +64,11 @@ function initDatabase(sequelize) {
 }
 exports.initDatabase = initDatabase;
 function syncDatabase(sequelize) {
-    shortUrl_1.urlMapModel.sync();
+    url_1.UrlModel.sync();
 }
 exports.syncDatabase = syncDatabase;
+//Used for testing purposes only, should be removed before production
 function dropDatabase(sequelize) {
-    console.log(1);
-    shortUrl_1.urlMapModel.drop();
+    url_1.UrlModel.drop();
 }
 exports.dropDatabase = dropDatabase;

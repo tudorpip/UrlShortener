@@ -1,11 +1,11 @@
-import { urlMapModel } from "../models/shortUrl.js";
+import { UrlModel } from "../models/url.js";
 import { DataTypes, Sequelize, UUIDV4 } from "sequelize";
 import {
   connectToDatabase,
   initDatabase,
   syncDatabase,
   dropDatabase,
-} from "../db/connectDb";
+} from "../db/connectDb.js";
 import * as pg from "pg";
 
 export class UrlMapperService {
@@ -15,15 +15,15 @@ export class UrlMapperService {
     syncDatabase(sequelize);
   }
   async getURL(id: any): Promise<any> {
-    return await urlMapModel.findOne({ where: { id: id } });
+    return await UrlModel.findOne({ where: { id: id } });
   }
-  async getAllURLs(): Promise<urlMapModel[]> {
-    return await urlMapModel.findAll();
+  async getAllURLs(): Promise<UrlModel[]> {
+    return await UrlModel.findAll();
   }
   async createURL(url: any): Promise<any> {
     try {
       const uuid = uuidv4();
-      const newUrl = await urlMapModel.create({ id: uuid, url: url });
+      const newUrl = await UrlModel.create({ id: uuid, url: url });
       return newUrl.id;
     } catch (error) {
       console.error("Error inserting URL:", error);

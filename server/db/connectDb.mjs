@@ -1,9 +1,10 @@
-import { UrlModel } from "../models/url";
+import { UrlModel } from "../models/url.mjs";
 import { DataTypes, Sequelize } from "sequelize";
-import * as pg from "pg";
-require("dotenv").config();
+import pg from "pg";
+import dotenv from "dotenv";
+dotenv.config();
 
-export function connectToDatabase(): Sequelize {
+export function connectToDatabase() {
   const URL = process.env.POSTGRES_URL;
   const sequelize = new Sequelize(URL || "", {
     dialect: "postgres",
@@ -19,7 +20,7 @@ export function connectToDatabase(): Sequelize {
   });
   return sequelize;
 }
-export function initDatabase(sequelize: Sequelize) {
+export function initDatabase(sequelize) {
   UrlModel.init(
     {
       id: {
@@ -39,11 +40,11 @@ export function initDatabase(sequelize: Sequelize) {
     }
   );
 }
-export async function syncDatabase(sequelize: Sequelize) {
+export async function syncDatabase(sequelize) {
   await UrlModel.sync();
 }
 
 //Used for testing purposes only, should be removed before production
-export async function dropDatabase(sequelize: Sequelize) {
+export async function dropDatabase(sequelize) {
   await UrlModel.drop();
 }

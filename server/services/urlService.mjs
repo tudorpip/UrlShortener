@@ -1,11 +1,12 @@
-import { UrlModel } from "../models/url.js";
+import { UrlModel } from "../models/url.mjs";
 import { DataTypes, Sequelize, UUIDV4 } from "sequelize";
+import express from "express";
 import {
   connectToDatabase,
   initDatabase,
   syncDatabase,
   dropDatabase,
-} from "../db/connectDb.js";
+} from "../db/connectDb.mjs";
 import * as pg from "pg";
 
 export class UrlMapperService {
@@ -14,13 +15,13 @@ export class UrlMapperService {
     initDatabase(sequelize);
     syncDatabase(sequelize);
   }
-  async getURL(id: any): Promise<any> {
+  async getURL(id) {
     return await UrlModel.findOne({ where: { id: id } });
   }
-  async getAllURLs(): Promise<UrlModel[]> {
+  async getAllURLs() {
     return await UrlModel.findAll();
   }
-  async createURL(url: any): Promise<any> {
+  async createURL(url) {
     try {
       const uuid = uuidv4();
       const newUrl = await UrlModel.create({ id: uuid, url: url });

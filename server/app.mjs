@@ -1,46 +1,21 @@
 import express from "express";
-import { UrlMapperService } from "./services/urlService.js";
-import serverless from "serverless-http";
-
-const app = express();
-const urlMapperService = new UrlMapperService();
-app.use(express.json());
 import cors from "cors";
+import urlRoutes from "./routes/urlRoutes.mjs";
+import { UrlMapperService } from "./services/urlService.mjs"; // Adjust the import path as necessary
+import { initDatabase, syncDatabase } from "./db/connectDb.mjs";
+import serverless from "serverless-http"; // Assuming you're using serverless-http for AWS Lambda or similar
+
+const app = express(); // Assuming UrlMapperService is defined elsewhere and used here
+app.use(express.json());
 
 app.use(cors());
-app.get("/", async (req, res) => {
-  try {
-    const urls = await urlMapperService.getAllURLs();
-    res.send(urls);
-  } catch (error) {
-    console.error("Error getting all URLs:", error);
-    res.status(500).send("An error occurred while getting all URLs.");
-  }
-});
 
-app.get("/:id", async (req, res) => {
-  const id = req.params.id;
-  const url = await urlMapperService.getURL(id);
-  res.status(303).redirect(url.url);
-});
-
-app.post("/create-url", async (req, res) => {
-  try {
-    const url = req.body.url;
-    console.log("URL IS 999" + url);
-    const result = await urlMapperService.createURL(url);
-    res
-      .status(200)
-      .json({ message: "URL created successfully", result: result });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "An error occurred while URL." });
-  }
-});
+app.use(urlRoutes);
 
 app.listen(8080, () => {
   console.log(
     "Server is running on port 8080. Check the app on http://localhost:8080"
   );
 });
+
 export const handler = serverless(app);

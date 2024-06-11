@@ -13,6 +13,7 @@ export interface NavBarProps {
 const App: FC = () => {
   const [nr, setNr] = useState<String>("");
   async function getCurrentNumber(url: string) {
+    console.log(1);
     await fetch("http://localhost:8080/create-url", {
       method: "POST",
       headers: {
@@ -47,12 +48,14 @@ const App: FC = () => {
           <div className="link-section ">
             <h1 className="header-link">
               This is your new short URL:
-              <span className="styled-part">{` http://localhost:8080/${nr}`}</span>
+              <span className="styled-part">{` http://localhost:8080/redirect/${nr}`}</span>
             </h1>
             <Button
               color="success"
               onClick={() => {
-                navigator.clipboard.writeText(`http://localhost:8080/${nr}`);
+                navigator.clipboard.writeText(
+                  `http://localhost:8080/redirect/${nr}`
+                );
               }}
             >
               Copy

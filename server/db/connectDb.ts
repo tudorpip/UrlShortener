@@ -39,11 +39,11 @@ export function initDatabase(sequelize: Sequelize) {
     }
   );
 }
-export function syncDatabase(sequelize: Sequelize) {
-  UrlModel.sync();
+export async function syncDatabase(sequelize: Sequelize) {
+  await UrlModel.sync();
 }
 
 //Used for testing purposes only, should be removed before production
-export function dropDatabase(sequelize: Sequelize) {
-  UrlModel.drop();
+export async function dropDatabase(sequelize: Sequelize) {
+  await UrlModel.drop();
 }

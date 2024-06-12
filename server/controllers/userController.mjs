@@ -1,7 +1,9 @@
 import { UserMapperService } from "../services/userService.mjs";
+import { RefreshTokenMapperService } from "../services/refreshTokenService.mjs";
 import jwt from "jsonwebtoken";
 
 const userMapperService = new UserMapperService();
+const refreshTokenMapperService = new RefreshTokenMapperService();
 
 export async function getAllUsers(req, res) {
   const users = await userMapperService.getAllUsers();
@@ -29,11 +31,9 @@ export async function attemptAuthentification(req, res) {
       );
       const refreshToken = jwt.sign(
         { username: username, uuidv4: nr },
-        process.env.REFRESH_TOKEN_SECRET,
-        {
-          expiresIn: "1d",
-        }
+        process.env.REFRESH_TOKEN_SECRET
       );
+      await refreshTokenMapperService.createRefreshToken(refreshToken);
       res.status(200).json({
         message: "User authenticated.",
         token: token,
@@ -50,6 +50,10 @@ export async function attemptAuthentification(req, res) {
 export async function createNewToken(req, res) {
   const refreshToken = req.body.token;
   if (refreshToken == null) return res.sendStatus(401);
+  if (!(await refreshTokenMapperService.getRefreshToken(refreshToken))) {
+    res.status(400).send("Invalid refresh token.");
+    return;
+  }
   jwt.verify(
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
@@ -76,6 +80,19 @@ export async function verifyToken(req, res, next) {
     req.user = user.username;
     next();
   });
+}
+export async function deleteToken(req, res) {
+  const token = req.params.token;
+  if (token == null) return res.sendStatus(401);
+  if (!(await refreshTokenMapperService.getRefreshToken(token)))
+    return res.sendStatus(404);
+  try {
+    await refreshTokenMapperService.deleteRefreshToken(token);
+    res.status(200).send("Token deleted");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error deleting token");
+  }
 }
 
 async function uuidv4() {

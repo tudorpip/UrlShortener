@@ -1,5 +1,6 @@
 import { UrlModel } from "../models/url.mjs";
 import { UserModel } from "../models/user.mjs";
+import { RefreshTokenModel } from "../models/refreshToken.mjs";
 import { DataTypes, Sequelize } from "sequelize";
 import pg from "pg";
 import dotenv from "dotenv";
@@ -57,10 +58,24 @@ export function initDatabase(sequelize) {
       tableName: "Users",
     }
   );
+  RefreshTokenModel.init(
+    {
+      token: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+      },
+    },
+    {
+      sequelize,
+      modelName: "RefreshTokenModel",
+      tableName: "RefreshTokens",
+    }
+  );
 }
 export async function syncDatabase(sequelize) {
   await UrlModel.sync();
   await UserModel.sync();
+  await RefreshTokenModel.sync();
 }
 
 //Used for testing purposes only, should be removed before production

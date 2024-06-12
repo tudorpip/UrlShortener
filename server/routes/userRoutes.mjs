@@ -5,6 +5,7 @@ import {
   attemptAuthentification,
   verifyToken,
   createNewToken,
+  deleteToken,
 } from "../controllers/userController.mjs";
 const router = express.Router();
 
@@ -21,4 +22,5 @@ router.get("/protected", verifyToken, (req, res) => {
   }
 });
 router.post("/token", createNewToken);
+router.delete("/token/:token", deleteToken);
 export default router;

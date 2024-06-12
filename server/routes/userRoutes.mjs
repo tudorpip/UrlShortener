@@ -4,6 +4,7 @@ import {
   createUser,
   attemptAuthentification,
   verifyToken,
+  createNewToken,
 } from "../controllers/userController.mjs";
 const router = express.Router();
 
@@ -19,4 +20,5 @@ router.get("/protected", verifyToken, (req, res) => {
     res.status(404).json({ message: "User not found" });
   }
 });
+router.post("/token", createNewToken);
 export default router;

@@ -1,16 +1,17 @@
 import express from "express";
 import cors from "cors";
 import urlRoutes from "./routes/urlRoutes.mjs";
-import { UrlMapperService } from "./services/urlService.mjs"; // Adjust the import path as necessary
+import { UrlMapperService } from "./services/urlService.mjs";
 import { initDatabase, syncDatabase } from "./db/connectDb.mjs";
-import serverless from "serverless-http"; // Assuming you're using serverless-http for AWS Lambda or similar
-
-const app = express(); // Assuming UrlMapperService is defined elsewhere and used here
+import serverless from "serverless-http";
+import userRoutes from "./routes/userRoutes.mjs";
+const app = express();
 app.use(express.json());
 
 app.use(cors());
 
 app.use(urlRoutes);
+app.use("/user", userRoutes);
 
 app.listen(8080, () => {
   console.log(

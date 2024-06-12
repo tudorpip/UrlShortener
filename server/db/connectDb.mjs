@@ -1,4 +1,5 @@
 import { UrlModel } from "../models/url.mjs";
+import { UserModel } from "../models/user.mjs";
 import { DataTypes, Sequelize } from "sequelize";
 import pg from "pg";
 import dotenv from "dotenv";
@@ -39,12 +40,30 @@ export function initDatabase(sequelize) {
       tableName: "URLs",
     }
   );
+  UserModel.init(
+    {
+      username: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+    },
+    {
+      sequelize,
+      modelName: "UserModel",
+      tableName: "Users",
+    }
+  );
 }
 export async function syncDatabase(sequelize) {
   await UrlModel.sync();
+  await UserModel.sync();
 }
 
 //Used for testing purposes only, should be removed before production
 export async function dropDatabase(sequelize) {
-  await UrlModel.drop();
+  await UserModel.drop();
 }

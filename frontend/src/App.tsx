@@ -14,13 +14,16 @@ const App: FC = () => {
   const [nr, setNr] = useState<String>("");
   async function getCurrentNumber(url: string) {
     console.log(1);
-    await fetch("http://localhost:8080/create-url", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ url: url }),
-    })
+    await fetch(
+      "https://01dfcf38-b594-4ec4-9300-8606ff03344d.us-east-1.cloud.genez.io/create-url",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url: url }),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         setNr(data.result);
@@ -48,13 +51,13 @@ const App: FC = () => {
           <div className="link-section ">
             <h1 className="header-link">
               This is your new short URL:
-              <span className="styled-part">{` http://localhost:8080/redirect/${nr}`}</span>
+              <span className="styled-part">{` https://01dfcf38-b594-4ec4-9300-8606ff03344d.us-east-1.cloud.genez.io/redirect/${nr}`}</span>
             </h1>
             <Button
               color="success"
               onClick={() => {
                 navigator.clipboard.writeText(
-                  `http://localhost:8080/redirect/${nr}`
+                  `https://01dfcf38-b594-4ec4-9300-8606ff03344d.us-east-1.cloud.genez.io/redirect/${nr}`
                 );
               }}
             >

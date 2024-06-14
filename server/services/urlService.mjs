@@ -10,11 +10,7 @@ import {
 import * as pg from "pg";
 
 export class UrlMapperService {
-  constructor() {
-    const sequelize = connectToDatabase();
-    initDatabase(sequelize);
-    syncDatabase(sequelize);
-  }
+  constructor() {}
   async getURL(id) {
     return await UrlModel.findOne({ where: { id: id } });
   }

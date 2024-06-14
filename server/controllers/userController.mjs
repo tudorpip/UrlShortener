@@ -58,7 +58,7 @@ export async function createNewToken(req, res) {
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
     async (err, user) => {
-      if (err) return res.sendStatus(403);
+      if (err) return res.sendStatus(401);
       const uuid = await uuidv4();
       const token = jwt.sign(
         { username: user.username, uuidv4: uuid },

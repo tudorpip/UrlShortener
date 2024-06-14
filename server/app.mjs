@@ -14,7 +14,6 @@ app.use(express.json());
 const sequelize = connectToDatabase();
 initDatabase(sequelize);
 syncDatabase(sequelize);
-app.use(cors());
 
 app.use(urlRoutes);
 app.use("/user", userRoutes);

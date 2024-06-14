@@ -1,5 +1,5 @@
 import { UserModel } from "../models/user.mjs";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export class UserMapperService {
   constructor() {

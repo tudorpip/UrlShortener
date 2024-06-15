@@ -10,15 +10,21 @@ export class UserMapperService {
     return UserModel.findOne({ where: { username: username } });
   }
 
-  async createUser(username, password) {
+  async createUser(username, email, password) {
     const hashedPassword = await this.hashPassword(password);
+    if (!this.isValidEmail(email)) {
+      return false;
+    }
     console.log(username, hashedPassword);
     try {
       const user = await UserModel.create({
         username: username,
+        email: email,
         password: hashedPassword,
       });
-      return user;
+      const userObject = user.toJSON();
+      delete userObject.password;
+      return userObject;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -51,5 +57,10 @@ export class UserMapperService {
   }
   async comparePasswords(password, hashedPassword) {
     return await bcrypt.compare(password, hashedPassword);
+  }
+
+  isValidEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
   }
 }

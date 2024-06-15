@@ -6,6 +6,7 @@ import {
   initDatabase,
   syncDatabase,
   connectToDatabase,
+  dropDatabase,
 } from "./db/connectDb.mjs";
 import serverless from "serverless-http";
 import userRoutes from "./routes/userRoutes.mjs";
@@ -18,10 +19,10 @@ syncDatabase(sequelize);
 app.use(urlRoutes);
 app.use("/user", userRoutes);
 
-// app.listen(8080, () => {
-//   console.log(
-//     "Server is running on port 8080. Check the app on http://localhost:8080"
-//   );
-// });
+app.listen(8080, () => {
+  console.log(
+    "Server is running on port 8080. Check the app on http://localhost:8080"
+  );
+});
 
 export const handler = serverless(app);

@@ -1,9 +1,8 @@
 import { UserMapperService } from "../services/userService.mjs";
-import { RefreshTokenMapperService } from "../services/refreshTokenService.mjs";
+import { ActiveSessionModel } from "../models/activeSession.mjs";
 import jwt from "jsonwebtoken";
 
 const userMapperService = new UserMapperService();
-const refreshTokenMapperService = new RefreshTokenMapperService();
 
 export async function getAllUsers(req, res) {
   const users = await userMapperService.getAllUsers();
@@ -12,7 +11,11 @@ export async function getAllUsers(req, res) {
 export async function createUser(req, res) {
   const username = req.body.username;
   const password = req.body.password;
-  const result = await userMapperService.createUser(username, password);
+  const email = req.body.email;
+  const result = await userMapperService.createUser(username, email, password);
+  if (result === false) {
+    return res.status(400).json({ error: "Invalid email." });
+  }
   res.status(200).json({ result: result });
 }
 export async function attemptAuthentification(req, res) {
@@ -26,18 +29,23 @@ export async function attemptAuthentification(req, res) {
         { username: username, uuidv4: nr },
         process.env.ACCESS_TOKEN_SECRET,
         {
-          expiresIn: "1h",
+          expiresIn: "1d",
         }
       );
-      const refreshToken = jwt.sign(
-        { username: username, uuidv4: nr },
-        process.env.REFRESH_TOKEN_SECRET
-      );
-      await refreshTokenMapperService.createRefreshToken(refreshToken);
+      try {
+        ActiveSessionModel.create({
+          token: token,
+          user: username,
+        });
+      } catch (error) {
+        console.log(error);
+        return res
+          .status(500)
+          .json({ error: "Unable to create active session" });
+      }
       res.status(200).json({
         message: "User authenticated.",
         token: token,
-        refreshToken: refreshToken,
       });
     } else {
       res.status(400).send("Invalid username/password.");
@@ -47,52 +55,29 @@ export async function attemptAuthentification(req, res) {
     res.status(500).send("No username/password found in the request.");
   }
 }
-export async function createNewToken(req, res) {
-  const refreshToken = req.body.token;
-  if (refreshToken == null) return res.sendStatus(401);
-  if (!(await refreshTokenMapperService.getRefreshToken(refreshToken))) {
-    res.status(400).send("Invalid refresh token.");
-    return;
+export async function getAllActiveSessions(req, res) {
+  try {
+    const activeSessions = await ActiveSessionModel.findAll();
+    res.status(200).json(activeSessions);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Unable to get the active sessions" });
   }
-  jwt.verify(
-    refreshToken,
-    process.env.REFRESH_TOKEN_SECRET,
-    async (err, user) => {
-      if (err) return res.sendStatus(401);
-      const uuid = await uuidv4();
-      const token = jwt.sign(
-        { username: user.username, uuidv4: uuid },
-        process.env.ACCESS_TOKEN_SECRET,
-        {
-          expiresIn: "1h",
-        }
-      );
-      res.json({ token: token });
-    }
-  );
 }
+
 export async function verifyToken(req, res, next) {
   const token = req.headers.authorization.split(" ")[1];
   if (token == null) return res.sendStatus(401);
+  const session = await ActiveSessionModel.findOne({ where: { token: token } });
+  if (!session) {
+    return res.status(401).send("Token not recognized");
+  }
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403).send("Invalid token");
     req.user = user.username;
     next();
   });
-}
-export async function deleteToken(req, res) {
-  const token = req.params.token;
-  if (token == null) return res.sendStatus(401);
-  if (!(await refreshTokenMapperService.getRefreshToken(token)))
-    return res.sendStatus(404);
-  try {
-    await refreshTokenMapperService.deleteRefreshToken(token);
-    res.status(200).send("Token deleted");
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Error deleting token");
-  }
 }
 
 async function uuidv4() {

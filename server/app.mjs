@@ -1,7 +1,5 @@
 import express from "express";
-import cors from "cors";
 import urlRoutes from "./routes/urlRoutes.mjs";
-import { UrlMapperService } from "./services/urlService.mjs";
 import {
   initDatabase,
   syncDatabase,

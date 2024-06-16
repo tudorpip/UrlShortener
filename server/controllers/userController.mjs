@@ -1,18 +1,18 @@
-import { UserMapperService } from "../services/userService.mjs";
+import { UserService } from "../services/userService.mjs";
 import { ActiveSessionModel } from "../models/activeSession.mjs";
 import jwt from "jsonwebtoken";
 
-const userMapperService = new UserMapperService();
+const userService = new UserService();
 
 export async function getAllUsers(req, res) {
-  const users = await userMapperService.getAllUsers();
+  const users = await userService.getAllUsers();
   res.status(200).json(users);
 }
 export async function createUser(req, res) {
   const username = req.body.username;
   const password = req.body.password;
   const email = req.body.email;
-  const result = await userMapperService.createUser(username, email, password);
+  const result = await userService.createUser(username, email, password);
   if (result === false) {
     return res.status(400).json({ error: "Invalid email." });
   }
@@ -22,7 +22,7 @@ export async function attemptAuthentification(req, res) {
   try {
     const username = req.body.username;
     const password = req.body.password;
-    const result = await userMapperService.authenticateUser(username, password);
+    const result = await userService.authenticateUser(username, password);
     const nr = await uuidv4();
     if (result) {
       const token = jwt.sign(

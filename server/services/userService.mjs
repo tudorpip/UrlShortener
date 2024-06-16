@@ -1,7 +1,7 @@
 import { UserModel } from "../models/user.mjs";
 import bcrypt from "bcryptjs";
 
-export class UserMapperService {
+export class UserService {
   constructor() {
     // Constructor is intentionally empty
   }

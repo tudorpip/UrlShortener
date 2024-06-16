@@ -9,7 +9,7 @@ import {
 } from "../db/connectDb.mjs";
 import * as pg from "pg";
 
-export class UrlMapperService {
+export class UrlService {
   constructor() {}
   async getURL(id) {
     return await UrlModel.findOne({ where: { id: id } });

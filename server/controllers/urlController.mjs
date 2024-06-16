@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
-import { UrlMapperService } from "../services/urlService.mjs";
+import { UrlService } from "../services/urlService.mjs";
 
-const urlMapperService = new UrlMapperService();
+const urlService = new UrlService();
 export async function getURL(req, res) {
   const id = req.params.id;
   const url = await urlMapperService.getURL(id);
@@ -10,7 +10,7 @@ export async function getURL(req, res) {
 
 export async function getAllURLs(req, res) {
   try {
-    const urls = await UrlMapperService.getAllURLs();
+    const urls = await urlService.getAllURLs();
     res.json(urls);
   } catch (error) {
     console.error("Error fetching URLs:", error);
@@ -23,7 +23,7 @@ export async function createURL(req, res) {
   try {
     const url = req.body.url;
     console.log("URL IS 999" + url);
-    const result = await urlMapperService.createURL(url);
+    const result = await urlService.createURL(url);
     res.status(200).json({ result: result });
   } catch (error) {
     console.log(error);

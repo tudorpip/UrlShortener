@@ -10,20 +10,22 @@ const background = require("./assets/images/undraw_schema.png") as string;
 export interface NavBarProps {
   children?: React.ReactNode;
 }
+const exportedUrl = process.env.REACT_APP_DEPLOYED_URL;
 const App: FC = () => {
   const [nr, setNr] = useState<String>("");
+  console.log(exportedUrl);
   async function getCurrentNumber(url: string) {
+    const baseURL = exportedUrl;
+    const endpoint = "/create-url";
+    const fullURL = baseURL + endpoint;
     console.log(1);
-    await fetch(
-      "https://01dfcf38-b594-4ec4-9300-8606ff03344d.us-east-1.cloud.genez.io/create-url",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ url: url }),
-      }
-    )
+    await fetch(fullURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url: url }),
+    })
       .then((response) => response.json())
       .then((data) => {
         setNr(data.result);
@@ -31,6 +33,9 @@ const App: FC = () => {
       });
   }
   const [url, setUrl] = useState<string>("");
+  const baseURL = exportedUrl;
+  const endpoint = "/redirect/";
+  const fullURL = baseURL + endpoint;
   return (
     <div className="main-app">
       <NavBar />
@@ -51,14 +56,12 @@ const App: FC = () => {
           <div className="link-section ">
             <h1 className="header-link">
               This is your new short URL:
-              <span className="styled-part">{` https://01dfcf38-b594-4ec4-9300-8606ff03344d.us-east-1.cloud.genez.io/redirect/${nr}`}</span>
+              <span className="styled-part">{`${fullURL}${nr}`}</span>
             </h1>
             <Button
               color="success"
               onClick={() => {
-                navigator.clipboard.writeText(
-                  `https://01dfcf38-b594-4ec4-9300-8606ff03344d.us-east-1.cloud.genez.io/redirect/${nr}`
-                );
+                navigator.clipboard.writeText(`${fullURL}${nr}`);
               }}
             >
               Copy

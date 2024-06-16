@@ -1,8 +1,6 @@
-import { UrlModel } from "../models/url.mjs"; // Adjust the import path as necessary
 import { v4 as uuidv4 } from "uuid";
 import { UrlMapperService } from "../services/urlService.mjs";
 
-// Assuming UrlModel and uuidv4 are correctly imported
 const urlMapperService = new UrlMapperService();
 export async function getURL(req, res) {
   const id = req.params.id;
@@ -12,7 +10,7 @@ export async function getURL(req, res) {
 
 export async function getAllURLs(req, res) {
   try {
-    const urls = await UrlModel.findAll();
+    const urls = await UrlMapperService.getAllURLs();
     res.json(urls);
   } catch (error) {
     console.error("Error fetching URLs:", error);

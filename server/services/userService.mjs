@@ -6,8 +6,9 @@ export class UserService {
     // Constructor is intentionally empty
   }
 
-  async getUser(username) {
-    return UserModel.findOne({ where: { username: username } });
+  async getUser(email) {
+    console.log("rara");
+    return UserModel.findOne({ where: { email: email } });
   }
 
   async isValidEmailCheck(email) {
@@ -27,10 +28,7 @@ export class UserService {
       console.log(1);
       return false;
     }
-    if (
-      !(await this.isValidUsername(username)) ||
-      !(await this.isValidEmailCheck(email))
-    ) {
+    if (!(await this.isValidEmailCheck(email))) {
       console.log(2);
       return false;
     }
@@ -49,9 +47,10 @@ export class UserService {
       throw new Error(error.message);
     }
   }
-  async authenticateUser(username, password) {
+  async authenticateUser(email, password) {
     try {
-      const user = await this.getUser(username);
+      console.log("rara1");
+      const user = await this.getUser(email);
       if (!user) {
         throw new Error("User not found");
       }
@@ -80,7 +79,6 @@ export class UserService {
   }
   async getIdFromUser(username) {
     const user = await UserModel.findOne({ where: { username: username } });
-    console.log(user.id);
     return user.id;
   }
 

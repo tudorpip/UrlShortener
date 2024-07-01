@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import GuestMainPage from "./views/GuestMainPage.tsx";
 import SignUpPage from "./views/SignUpPage.tsx";
 import LoginPage from "./views/LoginPage.tsx";

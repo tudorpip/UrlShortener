@@ -1,5 +1,5 @@
 import "../assets/css/App.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "reactstrap";
 import { FC } from "react";
 import React from "react";

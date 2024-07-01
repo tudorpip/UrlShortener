@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 const exportedUrl = process.env.REACT_APP_DEPLOYED_URL;
 export function LoginPage() {
-  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [invalidLoginError, setInvalidLoginError] = useState<boolean>(false);
   const [unknownError, setUnknownError] = useState<boolean>(false);
@@ -29,7 +29,7 @@ export function LoginPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: username,
+          email: email,
           password: password,
         }),
       });
@@ -54,16 +54,16 @@ export function LoginPage() {
         <Col md={{ size: 4, offset: 4 }}>
           <Form onSubmit={handleSubmit}>
             <FormGroup>
-              <Label for="username_input" className="mt-5">
-                Username
+              <Label for="email_input" className="mt-5">
+                Email
               </Label>
               <Input
-                id="username_input"
+                id="email_input"
                 className="form-control"
-                name="username"
-                placeholder="Please enter your username..."
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                name="email"
+                placeholder="Please enter your email..."
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </FormGroup>
             <FormGroup>

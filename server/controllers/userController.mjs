@@ -19,18 +19,25 @@ export async function createUser(req, res) {
 }
 export async function attemptAuthentification(req, res) {
   try {
-    const username = req.body.username;
+    const email = req.body.email;
     const password = req.body.password;
+    var user;
+    try {
+      user = await userService.getUser(email);
+    } catch (error) {
+      console.log("rara1");
+      return res.status(400).send("Invalid email/password.");
+    }
     var result;
     try {
-      result = await userService.authenticateUser(username, password);
+      result = await userService.authenticateUser(email, password);
     } catch (error) {
-      return res.status(400).send("Invalid username/password.");
+      return res.status(400).send("Invalid email/password.");
     }
     const nr = await uuidv4();
     if (result) {
       const token = jwt.sign(
-        { username: username, uuidv4: nr },
+        { id: user.id, uuidv4: nr },
         process.env.ACCESS_TOKEN_SECRET,
         {
           expiresIn: "1d",
@@ -39,7 +46,7 @@ export async function attemptAuthentification(req, res) {
       try {
         ActiveSessionModel.create({
           token: token,
-          user: username,
+          user: user.id,
         });
       } catch (error) {
         console.log(error);
@@ -77,7 +84,7 @@ export async function verifyToken(req, res, next) {
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
     if (err) return res.sendStatus(403).send("Invalid token");
-    req.userId = await userService.getIdFromUser(user.username);
+    req.userId = user.id;
     next();
   });
 }

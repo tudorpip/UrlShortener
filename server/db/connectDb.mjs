@@ -34,7 +34,6 @@ export function initDatabase(sequelize) {
       userId: {
         type: DataTypes.STRING,
         allowNull: false,
-        
       },
       url: {
         type: DataTypes.STRING,
@@ -57,8 +56,6 @@ export function initDatabase(sequelize) {
       },
       username: {
         type: DataTypes.STRING,
-        primaryKey: true,
-        unique: true,
       },
       email: {
         type: DataTypes.STRING,

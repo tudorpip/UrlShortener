@@ -35,6 +35,7 @@ export const NavBar: FC<NavBarProps> = ({ isAuthenticated }) => {
               className="me-5"
               onClick={() => {
                 localStorage.removeItem("token");
+                navigate("/");
                 window.location.reload();
               }}
             >

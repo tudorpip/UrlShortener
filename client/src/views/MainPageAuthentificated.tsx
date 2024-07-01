@@ -12,16 +12,6 @@ export interface NavBarProps {
 }
 const exportedUrl = process.env.REACT_APP_DEPLOYED_URL;
 const MainPage: FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsAuthenticated(true);
-    } else {
-      console.log("Token does not exist.");
-      setIsAuthenticated(false);
-    }
-  }, []);
   const [nr, setNr] = useState<String>("");
   console.log(exportedUrl);
   async function getCurrentNumber(url: string) {
@@ -51,47 +41,38 @@ const MainPage: FC = () => {
   const fullURL = baseURL + endpoint;
   return (
     <div className="main-app">
-      <NavBar isAuthenticated={isAuthenticated} />
+      <NavBar isAuthenticated={true} />
       <TextDescription />
-      {isAuthenticated ? (
-        <>
-          <h3 className="enter-url-css">Enter your URL</h3>
-          <div>
-            <input
-              className="my-input"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-            ></input>
-            <Button
-              color="dark"
-              size="lg"
-              onClick={() => getCurrentNumber(url)}
-            >
-              Get Short URL
-            </Button>
-            {nr !== "" && (
-              <div className="link-section ">
-                <h1 className="header-link">
-                  This is your new short URL:<br></br>
-                  <span className="styled-part">{`${fullURL}${nr}`}</span>
-                </h1>
-                <Button
-                  color="primary"
-                  onClick={() => {
-                    navigator.clipboard.writeText(`${fullURL}${nr}`);
-                  }}
-                >
-                  Copy
-                </Button>
-              </div>
-            )}
-          </div>
-        </>
-      ) : (
-        <h1 className="header-link display-4 font-weight-bold text-center mt-3">
-          Please authetificate
-        </h1>
-      )}
+      <>
+        <h3 className="enter-url-css">Enter your URL</h3>
+        <div>
+          <input
+            className="my-input"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+          ></input>
+          <Button color="dark" size="lg" onClick={() => getCurrentNumber(url)}>
+            Get Short URL
+          </Button>
+          {nr !== "" && (
+            <div className="link-section ">
+              <h1 className="header-link">
+                This is your new short URL:<br></br>
+                <span className="styled-part">{`${fullURL}${nr}`}</span>
+              </h1>
+              <Button
+                color="primary"
+                onClick={() => {
+                  navigator.clipboard.writeText(`${fullURL}${nr}`);
+                }}
+              >
+                Copy
+              </Button>
+            </div>
+          )}
+        </div>
+      </>
+      )
     </div>
   );
 };

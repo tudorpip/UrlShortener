@@ -36,7 +36,7 @@ export function LoginPage() {
       if (response.ok) {
         const res = await response.json();
         localStorage.setItem("token", res.token);
-        navigate("/");
+        navigate("/main");
       } else {
         setInvalidLoginError(true);
         console.error("Failed to submit form");

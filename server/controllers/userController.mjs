@@ -1,5 +1,6 @@
 import { UserService } from "../services/userService.mjs";
 import { ActiveSessionModel } from "../models/activeSession.mjs";
+import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
 
 const userService = new UserService();
@@ -82,6 +83,9 @@ export async function verifyToken(req, res, next) {
 }
 export async function checkActiveToken(req, res) {
   return res.status(200).send(req.userId);
+}
+export async function testNanoId(req, res) {
+  return res.status(200).send(nanoid());
 }
 
 async function uuidv4() {

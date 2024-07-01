@@ -33,3 +33,6 @@ export async function createURL(req, res) {
     res.status(500).json({ error: "An error occurred while URL." });
   }
 }
+async function testNanoId(req, res) {
+  return res.status(200).send(nanoid());
+}

@@ -1,15 +1,13 @@
 import express from "express";
 import {
-  getAllUsers,
   createUser,
   attemptAuthentification,
   verifyToken,
   getAllActiveSessions,
   checkActiveToken,
+  testNanoId,
 } from "../controllers/userController.mjs";
 const router = express.Router();
-
-router.get("/", getAllUsers);
 
 router.post("/create", createUser);
 
@@ -24,4 +22,5 @@ router.get("/protected", verifyToken, (req, res) => {
 });
 
 router.get("/validateToken", verifyToken, checkActiveToken);
+router.get("/nanoId", testNanoId);
 export default router;

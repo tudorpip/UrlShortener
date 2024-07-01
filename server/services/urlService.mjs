@@ -1,5 +1,6 @@
 import { UrlModel } from "../models/url.mjs";
 import { DataTypes, Sequelize, UUIDV4 } from "sequelize";
+import { nanoid } from "nanoid";
 import express from "express";
 import {
   connectToDatabase,
@@ -19,7 +20,7 @@ export class UrlService {
   }
   async createURL(url, userId) {
     try {
-      const uuid = uuidv4();
+      const uuid = nanoid(7);
       const newUrl = await UrlModel.create({
         id: uuid,
         userId: userId,

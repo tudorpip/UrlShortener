@@ -37,7 +37,7 @@ const MainPage: FC = () => {
   }
   const [url, setUrl] = useState<string>("");
   const baseURL = exportedUrl;
-  const endpoint = "/redirect/";
+  const endpoint = "/";
   const fullURL = baseURL + endpoint;
   return (
     <div className="main-app">

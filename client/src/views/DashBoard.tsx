@@ -31,7 +31,7 @@ export function Dashboard() {
       });
       const data = await resp.json();
       const newEntries = data.map((element) => {
-        const shortUrl = baseURL + "/redirect/" + element.id;
+        const shortUrl = baseURL + "/" + element.id;
         return {
           originalUrl: element.url,
           shortenedUrl: shortUrl,

@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get("/", verifyToken, getAllURLs);
 
-router.get("/redirect/:id", getURL);
+router.get("/:id", getURL);
 
 router.post("/create-url", verifyToken, createURL);
 

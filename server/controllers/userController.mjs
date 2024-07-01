@@ -12,9 +12,11 @@ export async function createUser(req, res) {
   const username = req.body.username;
   const password = req.body.password;
   const email = req.body.email;
+  console.log(1);
   const result = await userService.createUser(username, email, password);
+  console.log(result);
   if (result === false) {
-    return res.status(400).json({ error: "Invalid email." });
+    return res.status(400).json({ error: "Invalid email/username." });
   }
   res.status(200).json({ result: result });
 }
@@ -22,7 +24,12 @@ export async function attemptAuthentification(req, res) {
   try {
     const username = req.body.username;
     const password = req.body.password;
-    const result = await userService.authenticateUser(username, password);
+    var result;
+    try {
+      result = await userService.authenticateUser(username, password);
+    } catch (error) {
+      return res.status(400).send("Invalid username/password.");
+    }
     const nr = await uuidv4();
     if (result) {
       const token = jwt.sign(
@@ -47,8 +54,6 @@ export async function attemptAuthentification(req, res) {
         message: "User authenticated.",
         token: token,
       });
-    } else {
-      res.status(400).send("Invalid username/password.");
     }
   } catch (error) {
     console.log(error);
@@ -68,16 +73,19 @@ export async function getAllActiveSessions(req, res) {
 export async function verifyToken(req, res, next) {
   const token = req.headers.authorization.split(" ")[1];
   if (token == null) return res.sendStatus(401);
-  const session = await ActiveSessionModel.findOne({ where: { token: token } });
-  if (!session) {
-    return res.status(401).send("Token not recognized");
-  }
+  // const session = await ActiveSessionModel.findOne({ where: { token: token } });
+  // if (!session) {
+  //   return res.status(401).send("Token not recognized");
+  // }
 
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
     if (err) return res.sendStatus(403).send("Invalid token");
-    req.user = user.username;
+    req.userId = await userService.getIdFromUser(user.username);
     next();
   });
+}
+export async function checkActiveToken(req, res) {
+  return res.status(200).send(await userService.getIdFromUser(req.user));
 }
 
 async function uuidv4() {

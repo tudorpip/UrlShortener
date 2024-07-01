@@ -29,6 +29,12 @@ export function initDatabase(sequelize) {
         type: DataTypes.STRING,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
+        unique: true,
+      },
+      userId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        
       },
       url: {
         type: DataTypes.STRING,
@@ -47,13 +53,16 @@ export function initDatabase(sequelize) {
         type: DataTypes.STRING,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
+        unique: true,
       },
       username: {
         type: DataTypes.STRING,
         primaryKey: true,
+        unique: true,
       },
       email: {
         type: DataTypes.STRING,
+        unique: true,
       },
       password: {
         type: DataTypes.STRING,

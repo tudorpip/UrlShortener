@@ -4,13 +4,14 @@ import {
   getAllURLs,
   createURL,
 } from "../controllers/urlController.mjs";
+import { verifyToken } from "../controllers/userController.mjs";
 
 const router = express.Router();
 
-router.get("/", getAllURLs);
+router.get("/", verifyToken, getAllURLs);
 
 router.get("/redirect/:id", getURL);
 
-router.post("/create-url", createURL);
+router.post("/create-url", verifyToken, createURL);
 
 export default router;

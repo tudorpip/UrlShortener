@@ -5,6 +5,9 @@
   justify-content: space-between;
   align-items: center;
 }
+.background-image {
+  height: 400px;
+}
 .left {
   flex: 1;
 }
@@ -22,9 +25,9 @@
 }
 .styled-part {
   font-family: "Play", sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-style: bold;
-  font-size: 30px;
+  font-size: 22px;
   color: black;
 }
 .main-div {
@@ -39,13 +42,16 @@
   font-family: "Play", sans-serif;
   font-weight: 700;
   font-style: bold;
-  font-size: 75px;
+  font-size: 60px;
   color: black;
-  margin-left: 170px;
+  margin-left: 50px;
 }
 .description-section {
   display: flex;
   justify-content: center;
+}
+.display-section {
+  display: flex;
 }
 .link-section {
   display: flex;
@@ -54,20 +60,21 @@
   font-style: bold;
   font-size: 75px;
   color: rgb(255, 255, 255);
-  margin: 80px;
+  margin-top: 50px;
+  margin-left: 50px;
   margin-right: 50px;
 }
 .my-input {
   height: 50px;
   width: 700px;
   margin-right: 20px;
-  margin-left: 75px;
+  margin-left: 50px;
 }
 .motto-header {
   font-family: "Play", sans-serif;
   font-weight: 700;
   font-style: normal;
-  font-size: 90px;
+  font-size: 60px;
   color: #ffffff;
   margin: 50px;
 }
@@ -75,7 +82,7 @@
   font-family: "Play", sans-serif;
   font-weight: 500;
   font-style: normal;
-  font-size: 23px;
+  font-size: 18px;
   color: white;
   margin: 75px;
   margin-bottom: 0px;

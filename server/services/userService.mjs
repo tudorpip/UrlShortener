@@ -10,11 +10,31 @@ export class UserService {
     return UserModel.findOne({ where: { username: username } });
   }
 
+  async isValidEmailCheck(email) {
+    const user = await UserModel.findOne({ where: { email: email } });
+    console.log("user = " + user);
+    return user == null;
+  }
+  async isValidUsername(username) {
+    const user = await UserModel.findOne({ where: { username: username } });
+    console.log("user = " + user);
+    return user == null;
+  }
+
   async createUser(username, email, password) {
     const hashedPassword = await this.hashPassword(password);
-    if (!this.isValidEmail(email)) {
+    if (!(await this.isValidEmail(email))) {
+      console.log(1);
       return false;
     }
+    if (
+      !(await this.isValidUsername(username)) ||
+      !(await this.isValidEmailCheck(email))
+    ) {
+      console.log(2);
+      return false;
+    }
+    console.log(3);
     console.log(username, hashedPassword);
     try {
       const user = await UserModel.create({
@@ -58,9 +78,17 @@ export class UserService {
   async comparePasswords(password, hashedPassword) {
     return await bcrypt.compare(password, hashedPassword);
   }
+  async getIdFromUser(username) {
+    const user = await UserModel.findOne({ where: { username: username } });
+    console.log(user.id);
+    return user.id;
+  }
 
   isValidEmail(email) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
+    return true;
+
+    //TODO: Implement email validation
+    // const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // return regex.test(email);
   }
 }

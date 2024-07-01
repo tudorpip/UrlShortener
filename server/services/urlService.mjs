@@ -14,13 +14,17 @@ export class UrlService {
   async getURL(id) {
     return await UrlModel.findOne({ where: { id: id } });
   }
-  async getAllURLs() {
-    return await UrlModel.findAll();
+  async getAllURLs(userId) {
+    return await UrlModel.findAll({ where: { userId: userId } });
   }
-  async createURL(url) {
+  async createURL(url, userId) {
     try {
       const uuid = uuidv4();
-      const newUrl = await UrlModel.create({ id: uuid, url: url });
+      const newUrl = await UrlModel.create({
+        id: uuid,
+        userId: userId,
+        url: url,
+      });
       return newUrl.id;
     } catch (error) {
       console.error("Error inserting URL:", error);

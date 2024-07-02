@@ -4,8 +4,8 @@ import cors from "cors";
 import {
   initDatabase,
   syncDatabase,
-  connectToDatabase,
   dropDatabase,
+  connectToDatabase,
 } from "./db/connectDb.mjs";
 import serverless from "serverless-http";
 import userRoutes from "./routes/userRoutes.mjs";

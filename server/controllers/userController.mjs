@@ -46,7 +46,7 @@ export async function attemptAuthentification(req, res) {
       try {
         ActiveSessionModel.create({
           token: token,
-          user: user.id,
+          userId: user.id,
         });
       } catch (error) {
         console.log(error);
@@ -62,15 +62,6 @@ export async function attemptAuthentification(req, res) {
   } catch (error) {
     console.log(error);
     res.status(500).send("No username/password found in the request.");
-  }
-}
-export async function getAllActiveSessions(req, res) {
-  try {
-    const activeSessions = await ActiveSessionModel.findAll();
-    res.status(200).json(activeSessions);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Unable to get the active sessions" });
   }
 }
 
@@ -91,10 +82,6 @@ export async function verifyToken(req, res, next) {
 export async function checkActiveToken(req, res) {
   return res.status(200).send(req.userId);
 }
-export async function testNanoId(req, res) {
-  return res.status(200).send(nanoid());
-}
-
 async function uuidv4() {
   return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) =>
     (

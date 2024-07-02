@@ -1,10 +1,11 @@
 import "../assets/css/App.css";
 import { useState } from "react";
-import { Button } from "reactstrap";
+import { Button, Spinner } from "reactstrap";
 import { FC } from "react";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavBar } from "../components/NavBar.tsx";
+import { use } from "express/lib/application.js";
 export const logo = require("../assets/images/GenURL.png") as string;
 const background = require("../assets/images/undraw_schema.png") as string;
 export interface NavBarProps {
@@ -13,8 +14,11 @@ export interface NavBarProps {
 const exportedUrl = process.env.REACT_APP_DEPLOYED_URL;
 const MainPage: FC = () => {
   const [nr, setNr] = useState<String>("");
+  const [loading, setLoding] = useState<boolean>(false);
   console.log(exportedUrl);
   async function getCurrentNumber(url: string) {
+    setNr("");
+    setLoding(true);
     const baseURL = exportedUrl;
     const endpoint = "/create-url";
     const fullURL = baseURL + endpoint;
@@ -31,6 +35,7 @@ const MainPage: FC = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        setLoding(false);
         setNr(data.result);
         console.log(data.result);
       });
@@ -42,26 +47,28 @@ const MainPage: FC = () => {
   return (
     <div className="main-app">
       <NavBar isAuthenticated={true} />
-      <TextDescription />
-      <>
-        <h3 className="enter-url-css">Enter your URL</h3>
+      <div className="d-flex flex-column align-items-center ml-4 mr-4 mt-5 mb-5">
+        <h3 className="enter-url-css mb-4">Enter your URL</h3>
         <div>
           <input
             className="my-input"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
           ></input>
-          <Button color="dark" size="lg" onClick={() => getCurrentNumber(url)}>
+          <Button
+            color="dark"
+            style={{ height: "56px" }}
+            onClick={() => getCurrentNumber(url)}
+          >
             Get Short URL
           </Button>
           {nr !== "" && (
-            <div className="link-section ">
-              <h1 className="header-link">
-                This is your new short URL:<br></br>
-                <span className="styled-part">{`${fullURL}${nr}`}</span>
-              </h1>
+            <div className="flex-row display-flex justify-content-center d-flex mt-4">
+              <h3 className="me-3">This is your new short URL:</h3>
+              <h3 style={{ color: "white" }}>{`${fullURL}${nr}`}</h3>
               <Button
-                color="primary"
+                color="success"
+                style={{ height: "40px", marginLeft: "30px" }}
                 onClick={() => {
                   navigator.clipboard.writeText(`${fullURL}${nr}`);
                 }}
@@ -70,8 +77,28 @@ const MainPage: FC = () => {
               </Button>
             </div>
           )}
+          {loading === true && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Spinner
+                color="dark"
+                style={{
+                  height: "10rem",
+                  width: "10rem",
+                }}
+                type="grow"
+              >
+                Loading...
+              </Spinner>
+            </div>
+          )}
         </div>
-      </>
+      </div>
       )
     </div>
   );
@@ -93,6 +120,7 @@ const TextDescription: FC = () => {
             user-friendly service.
           </p>
         </div>
+        <br></br>
         <BackgroundImage />
       </div>
     </>

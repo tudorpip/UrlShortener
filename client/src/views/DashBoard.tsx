@@ -68,7 +68,7 @@ export function Dashboard() {
       <button
         className="close btn btn-primary m-2 lg"
         type="button"
-        onClick={() => navigator("/")}
+        onClick={() => navigator("/main")}
       >
         &times;
       </button>

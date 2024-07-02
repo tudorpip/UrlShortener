@@ -6,7 +6,6 @@ import {
   connectToDatabase,
   initDatabase,
   syncDatabase,
-  dropDatabase,
 } from "../db/connectDb.mjs";
 import * as pg from "pg";
 

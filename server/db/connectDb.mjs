@@ -52,7 +52,6 @@ export function initDatabase(sequelize) {
         type: DataTypes.STRING,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
-        unique: true,
       },
       username: {
         type: DataTypes.STRING,
@@ -83,7 +82,7 @@ export function initDatabase(sequelize) {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      user: {
+      userId: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -97,17 +96,13 @@ export function initDatabase(sequelize) {
     {
       sequelize,
       modelName: "ActiveSessionModel",
-      tableName: "ActiveSessions",
+      tableName: "active_sessions",
     }
   );
 }
 export async function syncDatabase(sequelize) {
-  await UrlModel.sync();
-  await UserModel.sync();
-  await ActiveSessionModel.sync();
+  await sequelize.sync();
 }
-
-//Used for testing purposes only, should be removed before production
 export async function dropDatabase(sequelize) {
-  await UserModel.drop();
+  await ActiveSessionModel.drop();
 }

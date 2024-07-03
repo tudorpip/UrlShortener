@@ -1,13 +1,5 @@
 import { UrlModel } from "../models/url.mjs";
-import { DataTypes, Sequelize, UUIDV4 } from "sequelize";
 import { nanoid } from "nanoid";
-import express from "express";
-import {
-  connectToDatabase,
-  initDatabase,
-  syncDatabase,
-} from "../db/connectDb.mjs";
-import * as pg from "pg";
 
 export async function getURL(req, res) {
   console.log(req.params.id);

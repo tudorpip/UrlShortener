@@ -8,7 +8,7 @@ export const Logo: FC = () => {
   return (
     <img
       className="logo-image"
-      onClick={() => navigate("/main")}
+      onClick={() => navigate("/admin/main")}
       src={logo}
       alt="logo"
     />

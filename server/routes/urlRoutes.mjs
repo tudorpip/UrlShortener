@@ -8,6 +8,6 @@ router.get("/", verifyToken, getAllURLs);
 
 router.get("/:id", getURL);
 
-router.post("/create-url", verifyToken, createURL);
+router.post("/", verifyToken, createURL);
 
 export default router;

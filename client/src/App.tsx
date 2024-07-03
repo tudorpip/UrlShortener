@@ -13,13 +13,19 @@ export default function App() {
     <Router>
       <Routes>
         <Route
-          path="/main"
+          path="/admin/main"
           element={<Admin element={<MainPageAuthentificated />} />}
         />
-        <Route path="/" element={<Auth element={<GuestMainPage />} />} />
-        <Route path="/signup" element={<Auth element={<SignUpPage />} />} />
-        <Route path="/login" element={<Auth element={<LoginPage />} />} />
-        <Route path="/dashboard" element={<Admin element={<Dashboard />} />} />
+        <Route path="/auth" element={<Auth element={<GuestMainPage />} />} />
+        <Route
+          path="/auth/signup"
+          element={<Auth element={<SignUpPage />} />}
+        />
+        <Route path="/auth/login" element={<Auth element={<LoginPage />} />} />
+        <Route
+          path="/admin/dashboard"
+          element={<Admin element={<Dashboard />} />}
+        />
         <Route path="*" element={<Auth element={<GuestMainPage />} />} />
       </Routes>
     </Router>

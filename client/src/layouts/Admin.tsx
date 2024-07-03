@@ -1,34 +1,30 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { validateToken } from "../network/ApiAxios.ts";
 export default function Admin(props: { element: React.ReactNode }) {
-  const exportedUrl = process.env.REACT_APP_DEPLOYED_URL;
   const navigate = useNavigate();
   React.useEffect(() => {
     if (localStorage.getItem("token") == null) {
       localStorage.clear();
       navigate("/");
+      return;
     }
-    async function checkToken() {
-      const baseURL = exportedUrl;
-      const endpoint = "/user/validateToken";
-      const fullURL = baseURL + endpoint;
-      const token = localStorage.getItem("token");
-      console.log(2);
-      await fetch(fullURL, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }).then((response) => {
-        if (response.status !== 200) {
-          localStorage.clear();
-          navigate("/");
-        }
+
+    async function checkTokenAndNavigate() {
+      const res = await validateToken().catch((error) => {
+        console.log("Error checking user auth", error);
+        return null;
       });
+      console.log(11);
+      if (res?.status !== 200) {
+        console.log(res?.status);
+        localStorage.clear();
+        return navigate("/");
+      }
     }
-    checkToken();
-  }, [navigate, exportedUrl]);
+
+    checkTokenAndNavigate();
+  }, [navigate]);
 
   return <>{props.element}</>;
 }

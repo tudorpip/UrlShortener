@@ -29,7 +29,6 @@ export function initDatabase(sequelize) {
         type: DataTypes.STRING,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
-        unique: true,
       },
       userId: {
         type: DataTypes.STRING,
@@ -42,8 +41,8 @@ export function initDatabase(sequelize) {
     },
     {
       sequelize,
-      modelName: "URLMapModel",
-      tableName: "URLs",
+      modelName: "UrlModel",
+      tableName: "urls",
     }
   );
   UserModel.init(
@@ -68,7 +67,7 @@ export function initDatabase(sequelize) {
     {
       sequelize,
       modelName: "UserModel",
-      tableName: "Users",
+      tableName: "users",
     }
   );
   ActiveSessionModel.init(

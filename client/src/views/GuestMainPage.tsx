@@ -40,7 +40,7 @@ const TextDescription: FC = () => {
           color="dark"
           size="lg"
           className="mt-5 mb-5"
-          onClick={() => navigate("/signup")}
+          onClick={() => navigate("/auth/signup")}
           style={{
             width: "270px",
             height: "80px",

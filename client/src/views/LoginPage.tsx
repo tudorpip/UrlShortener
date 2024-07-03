@@ -15,6 +15,7 @@ import {
   Button,
   Spinner,
 } from "reactstrap";
+
 export function LoginPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -29,7 +30,7 @@ export function LoginPage() {
       const response = await logInUser(email, password);
       setLoading(false);
       localStorage.setItem("token", response.data.token);
-      navigate("/main");
+      navigate("/admin/main");
     } catch (error) {
       setLoading(false);
       if (axios.isAxiosError(error) && error.response?.status === 400) {
@@ -102,7 +103,7 @@ export function LoginPage() {
                 </Button>
                 <p>
                   Don't have an account yet?{" "}
-                  <Link to="/signup" style={{ textDecoration: "none" }}>
+                  <Link to="/auth/signup" style={{ textDecoration: "none" }}>
                     {" "}
                     Sign up now!
                   </Link>

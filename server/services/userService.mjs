@@ -1,77 +1,39 @@
 import { ActiveSessionModel } from "../models/activeSession.mjs";
 import { UserModel } from "../models/user.mjs";
-import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
-async function createUserHelper(username, email, password) {
-  const hashedPassword = await hashPassword(password);
-  const user = await UserModel.findOne({ where: { email: email } });
-  if (user !== null || !isValidEmail(email)) {
-    console.log(2);
-    return false;
-  }
-  console.log(3);
-  console.log(username, hashedPassword);
-  try {
-    const user = await UserModel.create({
-      username: username,
-      email: email,
-      password: hashedPassword,
-    });
-    const userObject = user.toJSON();
-    delete userObject.password;
-    return userObject;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-}
-async function loginUser(email, password) {
-  try {
-    console.log("rara1");
-    const user = await UserModel.findOne({ where: { email: email } });
-    if (!user) {
-      throw new Error("User not found");
-    }
-    const isPasswordMatch = await comparePasswords(password, user.password);
-    if (!isPasswordMatch) {
-      throw new Error("Incorrect password");
-    }
-    return true;
-  } catch (error) {
-    throw error;
-  }
-}
-
-async function hashPassword(password) {
-  const saltRounds = 10;
-  return await bcrypt.hash(password, saltRounds);
-}
-async function comparePasswords(password, hashedPassword) {
-  return await bcrypt.compare(password, hashedPassword);
-}
-
-function isValidEmail(email) {
-  return true;
-
-  //TODO: Implement email validation
-  // const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  // return regex.test(email);
-}
-export async function createUser(req, res) {
+export async function register(req, res) {
   const username = req.body.username;
   const password = req.body.password;
   const email = req.body.email;
   console.log(1);
   const result = await createUserHelper(username, email, password);
   console.log(result);
-  if (result === false) {
-    return res.status(400).json({ error: "Invalid email/username." });
+  if (result === null) {
+    return res.status(400).json({ error: "Unable to create account" });
   }
   res.status(200).json({ result: result });
 }
+export async function logout(req, res) {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const session = await ActiveSessionModel.findOne({
+      where: { token: token },
+    });
+    if (session) {
+      await session.destroy();
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(401);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Error");
+  }
+}
 
-export async function attemptAuthentification(req, res) {
+export async function login(req, res) {
   try {
     const email = req.body.email;
     const password = req.body.password;
@@ -143,4 +105,59 @@ async function uuidv4() {
       (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
     ).toString(16)
   );
+}
+
+async function createUserHelper(username, email, password) {
+  const hashedPassword = await hashPassword(password);
+  const user = await UserModel.findOne({ where: { email: email } });
+  if (user !== null || !isValidEmail(email)) {
+    console.log(2);
+    return null;
+  }
+  console.log(3);
+  console.log(username, hashedPassword);
+  try {
+    const user = await UserModel.create({
+      username: username,
+      email: email,
+      password: hashedPassword,
+    });
+    const userObject = user.toJSON();
+    delete userObject.password;
+    return userObject;
+  } catch (error) {
+    return null;
+  }
+}
+async function loginUser(email, password) {
+  try {
+    console.log("rara1");
+    const user = await UserModel.findOne({ where: { email: email } });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const isPasswordMatch = await comparePasswords(password, user.password);
+    if (!isPasswordMatch) {
+      throw new Error("Incorrect password");
+    }
+    return true;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function hashPassword(password) {
+  const saltRounds = 10;
+  return await bcrypt.hash(password, saltRounds);
+}
+async function comparePasswords(password, hashedPassword) {
+  return await bcrypt.compare(password, hashedPassword);
+}
+
+function isValidEmail(email) {
+  return true;
+
+  //TODO: Implement email validation
+  // const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // return regex.test(email);
 }

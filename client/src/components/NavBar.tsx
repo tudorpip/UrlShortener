@@ -23,7 +23,7 @@ export const NavBar: FC<NavBarProps> = ({ isAuthenticated }) => {
               size="lg"
               className="me-5"
               onClick={() => {
-                navigate("/dashboard");
+                navigate("/admin/dashboard");
               }}
             >
               Dashboard
@@ -35,7 +35,7 @@ export const NavBar: FC<NavBarProps> = ({ isAuthenticated }) => {
               className="me-5"
               onClick={() => {
                 localStorage.removeItem("token");
-                navigate("/");
+                navigate("/auth");
                 window.location.reload();
               }}
             >
@@ -49,7 +49,7 @@ export const NavBar: FC<NavBarProps> = ({ isAuthenticated }) => {
               color="primary"
               size="lg"
               className="me-5"
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/auth/login")}
             >
               Login
             </Button>
@@ -57,7 +57,7 @@ export const NavBar: FC<NavBarProps> = ({ isAuthenticated }) => {
               color="primary"
               size="lg"
               className="me-5"
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate("/auth/signup")}
             >
               Sign up
             </Button>

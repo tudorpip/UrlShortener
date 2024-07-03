@@ -17,16 +17,16 @@ export function Dashboard() {
   const [tableData, setTableData] = useState<UrlData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
-    setIsLoading(true);
     const fetchData = async () => {
+      setIsLoading(true);
       const token = localStorage.getItem("token");
       if (!token) {
-        navigator("/login");
+        navigator("/auth/login");
       }
       const resp = await getAllUrls();
       const data = await resp.data;
       const newEntries = data.map((element) => {
-        const shortUrl = baseURL + "/" + element.id;
+        const shortUrl = baseURL + "/url/" + element.id;
         return {
           originalUrl: element.url,
           shortenedUrl: shortUrl,
@@ -63,7 +63,7 @@ export function Dashboard() {
       <button
         className="close btn btn-primary m-2 lg"
         type="button"
-        onClick={() => navigator("/main")}
+        onClick={() => navigator("/admin/main")}
       >
         &times;
       </button>

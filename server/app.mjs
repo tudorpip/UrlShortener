@@ -4,9 +4,8 @@ import cors from "cors";
 import {
   initDatabase,
   syncDatabase,
-  dropDatabase,
   connectToDatabase,
-} from "./db/connectDb.mjs";
+} from "./db/connect.mjs";
 import serverless from "serverless-http";
 import userRoutes from "./routes/userRoutes.mjs";
 const app = express();
@@ -17,7 +16,7 @@ const sequelize = connectToDatabase();
 initDatabase(sequelize);
 syncDatabase(sequelize);
 
-app.use(urlRoutes);
+app.use("/url", urlRoutes);
 app.use("/user", userRoutes);
 app.listen(8080, () => {
   console.log(

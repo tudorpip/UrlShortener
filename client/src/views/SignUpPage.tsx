@@ -29,7 +29,7 @@ export function SignUpPage() {
     try {
       await register(username, email, password);
       setLoading(false);
-      navigate("/login");
+      navigate("/auth/login");
     } catch (error) {
       setLoading(false);
       if (axios.isAxiosError(error) && error.response?.status === 400) {
@@ -112,7 +112,7 @@ export function SignUpPage() {
                 </Button>
                 <p>
                   Already have an account?
-                  <Link to="/login" style={{ textDecoration: "none" }}>
+                  <Link to="/auth/login" style={{ textDecoration: "none" }}>
                     {" "}
                     Log in now...
                   </Link>

@@ -27,7 +27,7 @@ const MainPage: FC = () => {
   }
   const [url, setUrl] = useState<string>("");
   const baseURL = exportedUrl;
-  const endpoint = "/";
+  const endpoint = "/url/";
   const fullURL = baseURL + endpoint;
   return (
     <div className="main-app">

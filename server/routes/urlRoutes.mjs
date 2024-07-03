@@ -1,10 +1,6 @@
 import express from "express";
-import {
-  getURL,
-  getAllURLs,
-  createURL,
-} from "../controllers/urlController.mjs";
-import { verifyToken } from "../controllers/userController.mjs";
+import { getURL, getAllURLs, createURL } from "../services/urlService.mjs";
+import { verifyToken } from "../services/userService.mjs";
 
 const router = express.Router();
 

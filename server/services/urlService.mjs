@@ -9,34 +9,49 @@ import {
 } from "../db/connectDb.mjs";
 import * as pg from "pg";
 
-export class UrlService {
-  constructor() {}
-  async getURL(id) {
-    return await UrlModel.findOne({ where: { id: id } });
+export async function getURL(req, res) {
+  console.log(req.params.id);
+  const id = req.params.id;
+  const url = await UrlModel.findOne({ where: { id: id } });
+  if (!url) {
+    return res.status(404).send("URL not found");
   }
-  async getAllURLs(userId) {
-    return await UrlModel.findAll({ where: { userId: userId } });
-  }
-  async createURL(url, userId) {
-    try {
-      const uuid = nanoid(7);
-      const newUrl = await UrlModel.create({
-        id: uuid,
-        userId: userId,
-        url: url,
-      });
-      return newUrl.id;
-    } catch (error) {
-      console.error("Error inserting URL:", error);
-      return -1;
-    }
+  return res.status(303).redirect(url.url);
+}
+
+export async function getAllURLs(req, res) {
+  const userId = req.userId;
+  try {
+    const urls = await UrlModel.findAll({ where: { userId: userId } });
+    res.json(urls);
+  } catch (error) {
+    console.error("Error fetching URLs:", error);
+    res.status(500).send("Internal Server Error");
   }
 }
-function uuidv4() {
-  return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) =>
-    (
-      +c ^
-      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
-    ).toString(16)
-  );
+
+export async function createURL(req, res) {
+  console.log(req.userId);
+  console.log("caca");
+  try {
+    const url = req.body.url;
+    console.log("URL IS 999" + url);
+    var newUrl;
+    try {
+      const uuid = nanoid(7);
+      const createdUrl = await UrlModel.create({
+        id: uuid,
+        userId: req.userId,
+        url: url,
+      });
+      newUrl = createdUrl;
+    } catch (error) {
+      console.error("Error inserting URL:", error);
+      url = null;
+    }
+    res.status(200).json({ url: url });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
+  }
 }

@@ -4,7 +4,7 @@ import {
   attemptAuthentification,
   verifyToken,
   checkActiveToken,
-} from "../controllers/userController.mjs";
+} from "../services/userService.mjs";
 const router = express.Router();
 
 router.post("/create", createUser);

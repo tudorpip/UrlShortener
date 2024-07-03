@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Table, Spinner } from "reactstrap";
+import { getAllUrls } from "../network/ApiAxios.ts";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export function Dashboard() {
@@ -16,20 +17,14 @@ export function Dashboard() {
   const [tableData, setTableData] = useState<UrlData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
+    setIsLoading(true);
     const fetchData = async () => {
-      setIsLoading(true);
       const token = localStorage.getItem("token");
       if (!token) {
         navigator("/login");
       }
-      const resp = await fetch(fullURL, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await resp.json();
+      const resp = await getAllUrls();
+      const data = await resp.data;
       const newEntries = data.map((element) => {
         const shortUrl = baseURL + "/" + element.id;
         return {

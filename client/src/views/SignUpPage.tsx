@@ -13,7 +13,8 @@ import {
   Button,
   Spinner,
 } from "reactstrap";
-const exportedUrl = process.env.REACT_APP_DEPLOYED_URL;
+import { register } from "../network/ApiAxios.ts";
+import axios from "axios";
 export function SignUpPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
@@ -22,33 +23,20 @@ export function SignUpPage() {
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<boolean>(false);
   const navigate = useNavigate();
-  const endpoint = "/user/create";
-  const fullURL = exportedUrl + endpoint;
   async function handleSubmit(e) {
     setLoading(true);
     e.preventDefault();
     try {
-      const response = await fetch(fullURL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: username,
-          email: email,
-          password: password,
-        }),
-      });
+      await register(username, email, password);
       setLoading(false);
-      if (response.ok) {
-        navigate("/login");
-      } else {
-        const errorDetails = await response.json();
-        setError(true);
-        console.error("Failed to submit form", errorDetails);
-      }
+      navigate("/login");
     } catch (error) {
-      setErrorMessage(true);
+      setLoading(false);
+      if (axios.isAxiosError(error) && error.response?.status === 400) {
+        setError(true);
+      } else {
+        setErrorMessage(true);
+      }
       console.error("Network error:", error);
     }
   }

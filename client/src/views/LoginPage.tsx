@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Logo } from "../components/Logo.tsx";
+import { logInUser } from "../network/ApiAxios.ts";
 import {
   Input,
   Form,
@@ -13,7 +15,6 @@ import {
   Button,
   Spinner,
 } from "reactstrap";
-const exportedUrl = process.env.REACT_APP_DEPLOYED_URL;
 export function LoginPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -21,38 +22,24 @@ export function LoginPage() {
   const [invalidLoginError, setInvalidLoginError] = useState<boolean>(false);
   const [unknownError, setUnknownError] = useState<boolean>(false);
   const navigate = useNavigate();
-  const endpoint = "/user/login";
-  const fullURL = exportedUrl + endpoint;
   async function handleSubmit(e) {
     setLoading(true);
     e.preventDefault();
     try {
-      const response = await fetch(fullURL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      });
+      const response = await logInUser(email, password);
       setLoading(false);
-      if (response.ok) {
-        const res = await response.json();
-        localStorage.setItem("token", res.token);
-        navigate("/main");
-      } else {
-        setInvalidLoginError(true);
-        console.error("Failed to submit form");
-      }
+      localStorage.setItem("token", response.data.token);
+      navigate("/main");
     } catch (error) {
-      console.error("Error:", error);
-      setUnknownError(true);
+      setLoading(false);
+      if (axios.isAxiosError(error) && error.response?.status === 400) {
+        setInvalidLoginError(true);
+        console.error("Invalid credentials provided");
+      } else {
+        console.error("Error:", error);
+        setUnknownError(true);
+      }
     }
-  }
-  function returnToMainPage() {
-    navigate("/");
   }
   // Rest of your component...
   return loading ? (

@@ -49,7 +49,7 @@ export async function createURL(req, res) {
       console.error("Error inserting URL:", error);
       url = null;
     }
-    res.status(200).json({ url: url });
+    res.status(200).json({ url: newUrl.id });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: error });

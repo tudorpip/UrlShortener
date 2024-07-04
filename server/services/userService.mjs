@@ -8,7 +8,30 @@ export async function register(req, res) {
   const password = req.body.password;
   const email = req.body.email;
   console.log(1);
-  const result = await createUserHelper(username, email, password);
+
+  var result;
+  const hashedPassword = await await bcrypt.hash(password, 10);
+  const user = await UserModel.findOne({ where: { email: email } });
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isValidEmail = regex.test(email);
+  if (user !== null || isValidEmail) {
+    console.log(2);
+    result = null;
+  }
+  console.log(3);
+  console.log(username, hashedPassword);
+  try {
+    const user = await UserModel.create({
+      username: username,
+      email: email,
+      password: hashedPassword,
+    });
+    const userObject = user.toJSON();
+    delete userObject.password;
+    result = userObject;
+  } catch (error) {
+    result = null;
+  }
   console.log(result);
   if (result === null) {
     return res.status(400).json({ error: "Unable to create account" });
@@ -39,26 +62,22 @@ export async function login(req, res) {
     const password = req.body.password;
     var user;
     try {
-      user = await UserModel.findOne({ where: { email: email } });
-    } catch (error) {
       console.log("rara1");
-      return res.status(400).send("Invalid email/password.");
-    }
-    var result;
-    try {
-      result = await loginUser(email, password);
+      user = await UserModel.findOne({ where: { email: email } });
+      if (!user) {
+        return res.status(400).send("Invalid email/password.");
+      }
+      const isPasswordMatch = await bcrypt.compare(password, user.password);
+      if (!isPasswordMatch) {
+        return res.status(400).send("Invalid email/password.");
+      }
     } catch (error) {
-      return res.status(400).send("Invalid email/password.");
+      return res.status(500).send("Something went wrong");
     }
-    const nr = await uuidv4();
-    if (result) {
-      const token = jwt.sign(
-        { id: user.id, uuidv4: nr },
-        process.env.ACCESS_TOKEN_SECRET,
-        {
-          expiresIn: "1d",
-        }
-      );
+    if (user) {
+      const token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: "1d",
+      });
       try {
         ActiveSessionModel.create({
           token: token,
@@ -97,67 +116,4 @@ export async function verifyToken(req, res, next) {
 }
 export async function checkActiveToken(req, res) {
   return res.status(200).send(req.userId);
-}
-async function uuidv4() {
-  return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) =>
-    (
-      +c ^
-      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
-    ).toString(16)
-  );
-}
-
-async function createUserHelper(username, email, password) {
-  const hashedPassword = await hashPassword(password);
-  const user = await UserModel.findOne({ where: { email: email } });
-  if (user !== null || !isValidEmail(email)) {
-    console.log(2);
-    return null;
-  }
-  console.log(3);
-  console.log(username, hashedPassword);
-  try {
-    const user = await UserModel.create({
-      username: username,
-      email: email,
-      password: hashedPassword,
-    });
-    const userObject = user.toJSON();
-    delete userObject.password;
-    return userObject;
-  } catch (error) {
-    return null;
-  }
-}
-async function loginUser(email, password) {
-  try {
-    console.log("rara1");
-    const user = await UserModel.findOne({ where: { email: email } });
-    if (!user) {
-      throw new Error("User not found");
-    }
-    const isPasswordMatch = await comparePasswords(password, user.password);
-    if (!isPasswordMatch) {
-      throw new Error("Incorrect password");
-    }
-    return true;
-  } catch (error) {
-    throw error;
-  }
-}
-
-async function hashPassword(password) {
-  const saltRounds = 10;
-  return await bcrypt.hash(password, saltRounds);
-}
-async function comparePasswords(password, hashedPassword) {
-  return await bcrypt.compare(password, hashedPassword);
-}
-
-function isValidEmail(email) {
-  return true;
-
-  //TODO: Implement email validation
-  // const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  // return regex.test(email);
 }

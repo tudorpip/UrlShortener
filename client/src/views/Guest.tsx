@@ -10,49 +10,47 @@ export const logo = require("../assets/images/GenURL.png") as string;
 export interface NavBarProps {
   children?: React.ReactNode;
 }
-const ApiURL = process.env.REACT_APP_DEPLOYED_URL;
 const Guest: FC = () => {
-  console.log(ApiURL);
+  const navigate = useNavigate();
   return (
     <div className="main-app">
       <NavBar isAuthenticated={false} />
-      <TextDescription />
+      <>
+        <div className="d-flex flex-column align-items-center ml-4 mr-4 mt-5 mb-5">
+          <h1 className="mt-4 mb-5" style={{ fontSize: "60px" }}>
+            Link smart,<span style={{ color: "#1217A2" }}> Share fast</span>
+          </h1>
+          <footer
+            className="fs-5"
+            style={{
+              color: "white",
+              marginLeft: "150px",
+              marginRight: "150px",
+            }}
+          >
+            Our website is designed to transform long URLs into short,
+            manageable links. This makes sharing easier and more efficient while
+            providing you with the ability to track engagement and clicks.
+            Simplify your online sharing experience with our streamlined,
+            user-friendly service.
+          </footer>
+          <Button
+            color="dark"
+            size="lg"
+            className="mt-5 mb-5"
+            onClick={() => navigate("/auth/register")}
+            style={{
+              width: "270px",
+              height: "80px",
+              fontSize: "30px",
+              borderRadius: "30px",
+            }}
+          >
+            Start now!
+          </Button>
+        </div>
+      </>
     </div>
-  );
-};
-const TextDescription: FC = () => {
-  const navigate = useNavigate();
-  return (
-    <>
-      <div className="d-flex flex-column align-items-center ml-4 mr-4 mt-5 mb-5">
-        <h1 className="mt-4 mb-5" style={{ fontSize: "60px" }}>
-          Link smart,<span style={{ color: "#1217A2" }}> Share fast</span>
-        </h1>
-        <footer
-          className="fs-5"
-          style={{ color: "white", marginLeft: "150px", marginRight: "150px" }}
-        >
-          Our website is designed to transform long URLs into short, manageable
-          links. This makes sharing easier and more efficient while providing
-          you with the ability to track engagement and clicks. Simplify your
-          online sharing experience with our streamlined, user-friendly service.
-        </footer>
-        <Button
-          color="dark"
-          size="lg"
-          className="mt-5 mb-5"
-          onClick={() => navigate("/auth/register")}
-          style={{
-            width: "270px",
-            height: "80px",
-            fontSize: "30px",
-            borderRadius: "30px",
-          }}
-        >
-          Start now!
-        </Button>
-      </div>
-    </>
   );
 };
 

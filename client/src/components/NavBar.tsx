@@ -23,7 +23,7 @@ export const NavBar: FC<NavBarProps> = ({ isAuthenticated }) => {
               size="lg"
               className="me-5"
               onClick={() => {
-                navigate("/admin/dashboard");
+                navigate("/admin/overview");
               }}
             >
               Dashboard

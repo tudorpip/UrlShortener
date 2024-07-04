@@ -4,7 +4,7 @@ import { Table, Spinner } from "reactstrap";
 import { getAllUrls } from "../network/ApiAxios.ts";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-export function Dashboard() {
+export function Overview() {
   const ApiURL = process.env.REACT_APP_DEPLOYED_URL;
   const baseURL = ApiURL;
   const endpoint = "/";
@@ -68,7 +68,7 @@ export function Dashboard() {
         &times;
       </button>
       <h1 className="header-link display-4 font-weight-bold text-center mt-3">
-        Dashboard
+        Overview
       </h1>
       <Table>
         <thead>
@@ -91,4 +91,4 @@ export function Dashboard() {
     </div>
   );
 }
-export default Dashboard;
+export default Overview;

@@ -6,7 +6,7 @@ export default function Auth(props: { element: React.ReactNode }) {
 
   React.useEffect(() => {
     if (localStorage.getItem("token") != null) {
-      navigate("/main");
+      navigate("/admin/create-url");
     }
   }, [navigate]);
 

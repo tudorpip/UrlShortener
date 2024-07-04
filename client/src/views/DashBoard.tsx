@@ -5,8 +5,8 @@ import { getAllUrls } from "../network/ApiAxios.ts";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export function Dashboard() {
-  const exportedUrl = process.env.REACT_APP_DEPLOYED_URL;
-  const baseURL = exportedUrl;
+  const ApiURL = process.env.REACT_APP_DEPLOYED_URL;
+  const baseURL = ApiURL;
   const endpoint = "/";
   const fullURL = baseURL + endpoint;
   const navigator = useNavigate();
@@ -63,7 +63,7 @@ export function Dashboard() {
       <button
         className="close btn btn-primary m-2 lg"
         type="button"
-        onClick={() => navigator("/admin/main")}
+        onClick={() => navigator("/admin/create-url")}
       >
         &times;
       </button>

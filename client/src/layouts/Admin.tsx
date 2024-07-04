@@ -13,13 +13,13 @@ export default function Admin(props: { element: React.ReactNode }) {
     async function checkTokenAndNavigate() {
       const res = await validateToken().catch((error) => {
         console.log("Error checking user auth", error);
-        return null;
+        return;
       });
       console.log(11);
       if (res?.status !== 200) {
         console.log(res?.status);
         localStorage.clear();
-        return navigate("/");
+        navigate("/");
       }
     }
 

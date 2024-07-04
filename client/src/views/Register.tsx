@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Logo } from "../components/Logo.tsx";
-import { logInUser } from "../network/ApiAxios.ts";
+import "bootstrap/dist/css/bootstrap.min.css";
 import {
   Input,
   Form,
@@ -15,34 +13,39 @@ import {
   Button,
   Spinner,
 } from "reactstrap";
-
-export function LoginPage() {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+import { register } from "../network/ApiAxios.ts";
+import { AxiosError } from "axios";
+export function Register() {
   const [loading, setLoading] = useState<boolean>(false);
-  const [invalidLoginError, setInvalidLoginError] = useState<boolean>(false);
-  const [unknownError, setUnknownError] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const navigate = useNavigate();
   async function handleSubmit(e) {
-    setLoading(true);
     e.preventDefault();
+    if (username === "" || password === "" || email === "") {
+      setError("All fields are required...");
+      return;
+    }
+    setLoading(true);
     try {
-      const response = await logInUser(email, password);
-      setLoading(false);
-      localStorage.setItem("token", response.data.token);
-      navigate("/admin/main");
+      const res = await register(username, email, password);
+      if (res.status === 200) {
+        setLoading(false);
+        navigate("/auth/login");
+      }
+      if (res instanceof AxiosError && res.response?.status !== 500) {
+        setLoading(false);
+        setError("Email is already used");
+      }
     } catch (error) {
       setLoading(false);
-      if (axios.isAxiosError(error) && error.response?.status === 400) {
-        setInvalidLoginError(true);
-        console.error("Invalid credentials provided");
-      } else {
-        console.error("Error:", error);
-        setUnknownError(true);
-      }
+
+      setError("Something went wrong, please try again later...");
+      console.error("Network error:", error);
     }
   }
-  // Rest of your component...
   return loading ? (
     <div
       style={{
@@ -65,22 +68,34 @@ export function LoginPage() {
       </Spinner>
     </div>
   ) : (
-    <>
+    <body>
       <NavBar />
       <Container className="md-5 mt-5 small-container">
-        <h1 className="text-center">Log in</h1>
+        <h1 className="text-center">Sign up</h1>
         <Row>
           <Col md={{ size: 4, offset: 4 }}>
             <Form onSubmit={handleSubmit}>
               <FormGroup>
-                <Label for="email_input" className="mt-5">
-                  Email
+                <Label for="username_input" className="mt-5">
+                  Username
                 </Label>
+                <Input
+                  id="username_input"
+                  className="form-control"
+                  name="username"
+                  placeholder="Please enter your username..."
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="examplePassword">Email</Label>
                 <Input
                   id="email_input"
                   className="form-control"
                   name="email"
                   placeholder="Please enter your email..."
+                  type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -98,32 +113,27 @@ export function LoginPage() {
                 />
               </FormGroup>
               <div className="d-flex flex-column align-items-center">
-                <Button className="btn-lg mt-3 mb-3" color="primary">
-                  Log in!
+                <Button className="mb-3 mt-3 btn-lg" color="primary">
+                  Sign up!
                 </Button>
                 <p>
-                  Don't have an account yet?{" "}
-                  <Link to="/auth/signup" style={{ textDecoration: "none" }}>
+                  Already have an account?
+                  <Link to="/auth/login" style={{ textDecoration: "none" }}>
                     {" "}
-                    Sign up now!
+                    Log in now...
                   </Link>
                 </p>
               </div>
             </Form>
           </Col>
         </Row>
-        {invalidLoginError && (
+        {error !== "" && (
           <h3 className="text-center mt-5" style={{ color: "red" }}>
-            Invalid username or password...
-          </h3>
-        )}
-        {unknownError && (
-          <h3 className="text-center mt-5" style={{ color: "red" }}>
-            An unknown error has occured, please try again later...
+            {`${error}`}
           </h3>
         )}
       </Container>
-    </>
+    </body>
   );
 }
 function NavBar() {
@@ -135,4 +145,4 @@ function NavBar() {
     </div>
   );
 }
-export default LoginPage;
+export default Register;

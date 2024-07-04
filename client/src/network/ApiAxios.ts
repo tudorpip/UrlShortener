@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
 const instance = axios.create({ baseURL: process.env.REACT_APP_DEPLOYED_URL });
 
@@ -9,6 +9,18 @@ instance.interceptors.request.use(async (config) => {
   return config;
 });
 
+instance.interceptors.response.use(
+  (response: AxiosResponse) => {
+    return response;
+  },
+  (error: AxiosError) => {
+    if (error.response?.status === 401) {
+      localStorage.clear();
+      window.location.href = "/auth/login";
+    }
+    return error;
+  }
+);
 // export const checkToken = async () => await instance.get("/auth/check-token");
 
 export const getAllUrls = async () => await instance.get("/url");

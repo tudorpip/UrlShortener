@@ -6,12 +6,13 @@ import { Button } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { NavBar } from "../components/NavBar.tsx";
 export const logo = require("../assets/images/GenURL.png") as string;
+// import myLogo from "../assets/images/GenURL.png";
 export interface NavBarProps {
   children?: React.ReactNode;
 }
-const exportedUrl = process.env.REACT_APP_DEPLOYED_URL;
-const MainPage: FC = () => {
-  console.log(exportedUrl);
+const ApiURL = process.env.REACT_APP_DEPLOYED_URL;
+const Guest: FC = () => {
+  console.log(ApiURL);
   return (
     <div className="main-app">
       <NavBar isAuthenticated={false} />
@@ -40,7 +41,7 @@ const TextDescription: FC = () => {
           color="dark"
           size="lg"
           className="mt-5 mb-5"
-          onClick={() => navigate("/auth/signup")}
+          onClick={() => navigate("/auth/register")}
           style={{
             width: "270px",
             height: "80px",
@@ -55,4 +56,4 @@ const TextDescription: FC = () => {
   );
 };
 
-export default MainPage;
+export default Guest;

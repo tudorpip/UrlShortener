@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import GuestMainPage from "./views/GuestMainPage.tsx";
-import SignUpPage from "./views/SignUpPage.tsx";
-import LoginPage from "./views/LoginPage.tsx";
-import Dashboard from "./views/DashBoard.tsx";
-import MainPageAuthentificated from "./views/MainPageAuthentificated.tsx";
+import Guest from "./views/Guest.tsx";
+import Register from "./views/Register.tsx";
+import Login from "./views/Login.tsx";
+import Dashboard from "./views/Dashboard.tsx";
+import CreateUrl from "./views/CreateUrl.tsx";
 import Admin from "./layouts/Admin.tsx";
 import Auth from "./layouts/Auth.tsx";
 
@@ -13,20 +13,20 @@ export default function App() {
     <Router>
       <Routes>
         <Route
-          path="/admin/main"
-          element={<Admin element={<MainPageAuthentificated />} />}
+          path="/admin/create-url"
+          element={<Admin element={<CreateUrl />} />}
         />
-        <Route path="/auth" element={<Auth element={<GuestMainPage />} />} />
+        <Route path="/auth" element={<Auth element={<Guest />} />} />
         <Route
-          path="/auth/signup"
-          element={<Auth element={<SignUpPage />} />}
+          path="/auth/register"
+          element={<Auth element={<Register />} />}
         />
-        <Route path="/auth/login" element={<Auth element={<LoginPage />} />} />
+        <Route path="/auth/login" element={<Auth element={<Login />} />} />
         <Route
           path="/admin/dashboard"
           element={<Admin element={<Dashboard />} />}
         />
-        <Route path="*" element={<Auth element={<GuestMainPage />} />} />
+        <Route path="*" element={<Auth element={<Guest />} />} />
       </Routes>
     </Router>
   );

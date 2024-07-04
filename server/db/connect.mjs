@@ -35,7 +35,7 @@ export function initDatabase(sequelize) {
         allowNull: false,
       },
       url: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
     },
@@ -101,7 +101,4 @@ export function initDatabase(sequelize) {
 }
 export async function syncDatabase(sequelize) {
   await sequelize.sync();
-}
-export async function dropDatabase(sequelize) {
-  await ActiveSessionModel.drop();
 }

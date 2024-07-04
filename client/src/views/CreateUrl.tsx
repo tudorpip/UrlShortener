@@ -10,23 +10,23 @@ export const logo = require("../assets/images/GenURL.png") as string;
 export interface NavBarProps {
   children?: React.ReactNode;
 }
-const exportedUrl = process.env.REACT_APP_DEPLOYED_URL;
-const MainPage: FC = () => {
-  const [nr, setNr] = useState<String>("");
+const ApiURL = process.env.REACT_APP_DEPLOYED_URL;
+const CreateUrl: FC = () => {
+  const [sufixUrl, setSufixUrl] = useState<String>("");
   const [loading, setLoding] = useState<boolean>(false);
-  console.log(exportedUrl);
+  console.log(ApiURL);
   async function getCurrentNumber(url: string) {
-    setNr("");
+    setSufixUrl("");
     setLoding(true);
     console.log(1);
     const resp = await createUrl(url);
     console.log(resp);
     setLoding(false);
-    setNr(resp.data.url);
+    setSufixUrl(resp.data.url);
     console.log(resp.data);
   }
   const [url, setUrl] = useState<string>("");
-  const baseURL = exportedUrl;
+  const baseURL = ApiURL;
   const endpoint = "/url/";
   const fullURL = baseURL + endpoint;
   return (
@@ -47,15 +47,15 @@ const MainPage: FC = () => {
           >
             Get Short URL
           </Button>
-          {nr !== "" && (
+          {sufixUrl !== "" && (
             <div className="flex-row display-flex justify-content-center d-flex mt-4">
               <h3 className="me-3">This is your new short URL:</h3>
-              <h3 style={{ color: "white" }}>{`${fullURL}${nr}`}</h3>
+              <h3 style={{ color: "white" }}>{`${fullURL}${sufixUrl}`}</h3>
               <Button
                 color="success"
                 style={{ height: "40px", marginLeft: "30px" }}
                 onClick={() => {
-                  navigator.clipboard.writeText(`${fullURL}${nr}`);
+                  navigator.clipboard.writeText(`${fullURL}${sufixUrl}`);
                 }}
               >
                 Copy
@@ -89,4 +89,4 @@ const MainPage: FC = () => {
   );
 };
 
-export default MainPage;
+export default CreateUrl;

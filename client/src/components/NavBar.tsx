@@ -57,7 +57,7 @@ export const NavBar: FC<NavBarProps> = ({ isAuthenticated }) => {
               color="primary"
               size="lg"
               className="me-5"
-              onClick={() => navigate("/auth/signup")}
+              onClick={() => navigate("/auth/register")}
             >
               Sign up
             </Button>

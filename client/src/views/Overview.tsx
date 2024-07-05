@@ -25,7 +25,7 @@ export function Overview() {
       }
       const resp = await getAllUrls();
       const data = await resp.data;
-      const newEntries = data.map((element : any) => {
+      const newEntries = data.map((element: any) => {
         const shortUrl = baseURL + "/url/" + element.id;
         return {
           originalUrl: element.url,
@@ -70,7 +70,15 @@ export function Overview() {
       <h1 className="header-link display-4 font-weight-bold text-center mt-3">
         Overview
       </h1>
-      <Table>
+      <Table
+        className="table-hover ml-2 mr-5"
+        style={{
+          maxWidth: "100%",
+          width: "auto",
+          margin: "0 20px",
+          boxSizing: "border-box",
+        }}
+      >
         <thead>
           <tr>
             <th>#</th>
@@ -82,7 +90,7 @@ export function Overview() {
           {tableData.map((url, index) => (
             <tr key={index}>
               <th scope="row">{index + 1}</th>
-              <td>{url.originalUrl}</td>
+              <td className="text-break">{url.originalUrl}</td>
               <td>{url.shortenedUrl}</td>
             </tr>
           ))}

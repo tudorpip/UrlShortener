@@ -10,18 +10,19 @@ instance.interceptors.request.use(async (config) => {
   return config;
 });
 
-instance.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response;
-  },
-  (error: AxiosError) => {
-    if (error.response?.status === 401) {
-      localStorage.clear();
-      window.location.href = "/auth/login";
-    }
-    return error;
-  }
-);
+// instance.interceptors.response.use(
+//   (response: AxiosResponse) => {
+//     return response;
+//   },
+//   (error: AxiosError) => {
+//     if (error.response?.status === 401) {
+//       console.log(200);
+//       localStorage.clear();
+//       window.location.href = "/auth/login";
+//     }
+//     return error;
+//   }
+// );
 // export const checkToken = async () => await instance.get("/auth/check-token");
 
 export const getAllUrls = async () => await instance.get("/url");

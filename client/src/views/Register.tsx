@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Logo } from "../components/Logo.tsx";
+import { Logo } from "../components/Logo";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   Input,
@@ -13,7 +13,7 @@ import {
   Button,
   Spinner,
 } from "reactstrap";
-import { register } from "../network/ApiAxios.ts";
+import { register } from "../network/ApiAxios";
 import { AxiosError } from "axios";
 export function Register() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -22,7 +22,7 @@ export function Register() {
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
-  async function handleSubmit(e) {
+  async function handleSubmit(e: any) {
     e.preventDefault();
     if (username === "" || password === "" || email === "") {
       setError("All fields are required...");

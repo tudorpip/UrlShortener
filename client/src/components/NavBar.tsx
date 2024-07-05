@@ -2,7 +2,7 @@ import { FC } from "react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
-import { Logo } from "../components/Logo.tsx";
+import { Logo } from "../components/Logo";
 
 interface NavBarProps {
   isAuthenticated: boolean;

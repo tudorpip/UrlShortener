@@ -39,8 +39,12 @@ export function Register() {
         setLoading(false);
         setError("Email is already used");
       }
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false);
+      if (error.response?.status !== 500) {
+        setError("Email is already used");
+        return;
+      }
 
       setError("Something went wrong, please try again later...");
       console.error("Network error:", error);

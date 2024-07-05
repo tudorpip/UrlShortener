@@ -2,10 +2,10 @@ import express from "express";
 import {
   register,
   login,
-  verifyToken,
   checkActiveToken,
   logout,
 } from "../services/userService.mjs";
+import { verifyToken } from "../middleware/verifyToken.mjs";
 const router = express.Router();
 
 router.post("/create", register);

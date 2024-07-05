@@ -37,12 +37,13 @@ export function Login() {
         localStorage.setItem("token", res.data.token);
         navigate("/admin/create-url");
       }
-
-      if (res instanceof AxiosError && res.response?.status !== 500) {
-        setLoading(false);
+    } catch (error: any) {
+      setLoading(false);
+      console.log(error.response?.status);
+      if (error.response?.status !== 500) {
         setError("Invalid credentials provided");
+        return;
       }
-    } catch (error) {
       console.error("Error:", error);
       setError("Something went wrong, please try again later...");
     }

@@ -4,13 +4,12 @@ import { Button, Spinner } from "reactstrap";
 import { FC } from "react";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { NavBar } from "../components/NavBar.tsx";
-import { createUrl } from "../network/ApiAxios.ts";
-export const logo = require("../assets/images/GenURL.png") as string;
+import { NavBar } from "../components/NavBar";
+import { createUrl } from "../network/ApiAxios";
 export interface NavBarProps {
   children?: React.ReactNode;
 }
-const ApiURL = process.env.REACT_APP_DEPLOYED_URL;
+const ApiURL = import.meta.env.VITE_DEPLOYED_URL;
 const CreateUrl: FC = () => {
   const [sufixUrl, setSufixUrl] = useState<String>("");
   const [loading, setLoding] = useState<boolean>(false);

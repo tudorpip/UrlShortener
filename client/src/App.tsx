@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Guest from "./views/Guest.tsx";
-import Register from "./views/Register.tsx";
-import Login from "./views/Login.tsx";
-import Overview from "./views/Overview.tsx";
-import CreateUrl from "./views/CreateUrl.tsx";
-import Admin from "./layouts/Admin.tsx";
-import Auth from "./layouts/Auth.tsx";
+import Guest from "./views/Guest";
+import Register from "./views/Register";
+import Login from "./views/Login";
+import Overview from "./views/Overview";
+import CreateUrl from "./views/CreateUrl";
+import Admin from "./layouts/Admin";
+import Auth from "./layouts/Auth";
 
 export default function App() {
   return (

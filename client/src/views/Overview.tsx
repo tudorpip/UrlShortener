@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Table, Spinner } from "reactstrap";
-import { getAllUrls } from "../network/ApiAxios.ts";
+import { getAllUrls } from "../network/ApiAxios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export function Overview() {
-  const ApiURL = process.env.REACT_APP_DEPLOYED_URL;
+  const ApiURL = import.meta.env.VITE_DEPLOYED_URL;
   const baseURL = ApiURL;
   const endpoint = "/";
   const fullURL = baseURL + endpoint;
@@ -25,7 +25,7 @@ export function Overview() {
       }
       const resp = await getAllUrls();
       const data = await resp.data;
-      const newEntries = data.map((element) => {
+      const newEntries = data.map((element : any) => {
         const shortUrl = baseURL + "/url/" + element.id;
         return {
           originalUrl: element.url,

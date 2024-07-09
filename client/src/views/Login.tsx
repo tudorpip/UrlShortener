@@ -14,6 +14,7 @@ import {
   Button,
   Spinner,
 } from "reactstrap";
+import { AxiosError } from "axios";
 
 export function Login() {
   const [email, setEmail] = useState<string>("");
@@ -29,17 +30,17 @@ export function Login() {
     }
     setLoading(true);
     const res = await logInUser(email, password).catch((err) => {
-      setLoading(false);
-      console.log(err.response?.status);
-      if (err.response?.status === 400) {
-        setError("Invalid credentials provided");
-        return null;
-      }
       console.error("Error:", error);
       setError("Something went wrong, please try again later...");
       return null;
     });
     if (!res) {
+      setLoading(false);
+      return;
+    }
+    if (res instanceof AxiosError) {
+      setLoading(false);
+      setError("Invalid credentials provided");
       return;
     }
     console.log(res);

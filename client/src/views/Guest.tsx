@@ -5,7 +5,7 @@ import { Button } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { NavBar } from "../components/NavBar";
 
-const Guest: FC = () => {
+function Guest() {
   const navigate = useNavigate();
   return (
     <div className="main-app">
@@ -47,6 +47,6 @@ const Guest: FC = () => {
       </>
     </div>
   );
-};
+}
 
 export default Guest;

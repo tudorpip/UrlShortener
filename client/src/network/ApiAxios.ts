@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
+
 console.log(import.meta.env.VITE_DEPLOYED_URL);
 
 const instance = axios.create({ baseURL: import.meta.env.VITE_DEPLOYED_URL });
@@ -9,6 +10,19 @@ instance.interceptors.request.use(async (config) => {
   config.headers["Content-Type"] = "application/json";
   return config;
 });
+
+instance.interceptors.response.use(
+  (response: AxiosResponse) => {
+    return response;
+  },
+  (error: AxiosError) => {
+    if (error.response?.status === 401) {
+      localStorage.clear();
+      window.location.href = "/auth/login";
+    }
+    return error;
+  }
+);
 
 export const getAllUrls = async () => await instance.get("/url");
 export const logInUser = async (email: string, password: string) =>

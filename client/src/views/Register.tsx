@@ -14,6 +14,7 @@ import {
   Spinner,
 } from "reactstrap";
 import { register } from "../network/ApiAxios";
+import { AxiosError } from "axios";
 export function Register() {
   const [loading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
@@ -29,14 +30,23 @@ export function Register() {
     }
     setLoading(true);
     const res = await register(username, email, password).catch((error) => {
+      setError("Something went wrong, please try again later...");
+      console.error("Network error:", error);
+      return null;
+    });
+    if (!res) {
       setLoading(false);
-      console.log(error.message);
-      if (error.message === "Network Error") {
+      return;
+    }
+    if (res instanceof AxiosError) {
+      setLoading(false);
+      console.log(res.message);
+      if (res.message === "Network Error") {
         setError("Our servers are currently down, please try again later...");
-        return null;
+        return;
       }
-      if (error.response?.status !== 500) {
-        const errorData = error.response?.data.error;
+      if (res.response?.status !== 500) {
+        const errorData = res.response?.data.error;
         if (errorData === "Invalid password format") {
           setError(
             "Invalid password! Password must have at least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number"
@@ -44,13 +54,11 @@ export function Register() {
         } else {
           setError("Email is already used");
         }
-        return null;
+        return;
+      } else {
+        setError("Something went wrong, please try again later...");
+        return;
       }
-      setError("Something went wrong, please try again later...");
-      console.error("Network error:", error);
-    });
-    if (!res) {
-      return;
     }
     if (res.status === 200) {
       setLoading(false);

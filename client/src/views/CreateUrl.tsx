@@ -8,7 +8,7 @@ import { createUrl } from "../network/ApiAxios";
 
 const ApiURL = import.meta.env.VITE_DEPLOYED_URL;
 
-const CreateUrl: FC = () => {
+function CreateUrl() {
   const [sufixUrl, setSufixUrl] = useState<String>("");
   const [loading, setLoding] = useState<boolean>(false);
   console.log(ApiURL);
@@ -33,10 +33,8 @@ const CreateUrl: FC = () => {
   }
   const [url, setUrl] = useState<string>("");
   const [error, setError] = useState<string>("");
-  
-  const baseURL = ApiURL;
-  const endpoint = "/url/";
-  const fullURL = baseURL + endpoint;
+
+  const fullURL = ApiURL + "/url/";
   return (
     <div className="main-app">
       <NavBar isAuthenticated={true} />
@@ -105,6 +103,6 @@ const CreateUrl: FC = () => {
       )
     </div>
   );
-};
+}
 
 export default CreateUrl;

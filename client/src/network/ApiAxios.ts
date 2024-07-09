@@ -14,7 +14,7 @@ export const getAllUrls = async () => await instance.get("/url");
 export const logInUser = async (email: string, password: string) =>
   await instance.post("/user/login", { email, password });
 export const createUrl = async (url: string) =>
-  await instance.post("/url/", { url });
+  await instance.post("/url", { url });
 export const register = async (
   username: string,
   email: string,

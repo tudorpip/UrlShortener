@@ -28,18 +28,12 @@ export function Register() {
       return;
     }
     setLoading(true);
-    try {
-      const res = await register(username, email, password);
-      if (res.status === 200) {
-        setLoading(false);
-        navigate("/auth/login");
-      }
-    } catch (error: any) {
+    const res = await register(username, email, password).catch((error) => {
       setLoading(false);
       console.log(error.message);
       if (error.message === "Network Error") {
         setError("Our servers are currently down, please try again later...");
-        return;
+        return null;
       }
       if (error.response?.status !== 500) {
         const errorData = error.response?.data.error;
@@ -50,11 +44,17 @@ export function Register() {
         } else {
           setError("Email is already used");
         }
-        return;
+        return null;
       }
-
       setError("Something went wrong, please try again later...");
       console.error("Network error:", error);
+    });
+    if (!res) {
+      return;
+    }
+    if (res.status === 200) {
+      setLoading(false);
+      navigate("/auth/login");
     }
   }
   return loading ? (

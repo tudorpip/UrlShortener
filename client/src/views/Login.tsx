@@ -28,23 +28,25 @@ export function Login() {
       return;
     }
     setLoading(true);
-    try {
-      const res = await logInUser(email, password);
-      console.log(res);
-      if (res.status === 200) {
-        setLoading(false);
-        localStorage.setItem("token", res.data.token);
-        navigate("/admin/create-url");
-      }
-    } catch (error: any) {
+    const res = await logInUser(email, password).catch((err) => {
       setLoading(false);
-      console.log(error.response?.status);
-      if (error.response?.status !== 500) {
+      console.log(err.response?.status);
+      if (err.response?.status === 400) {
         setError("Invalid credentials provided");
-        return;
+        return null;
       }
       console.error("Error:", error);
       setError("Something went wrong, please try again later...");
+      return null;
+    });
+    if (!res) {
+      return;
+    }
+    console.log(res);
+    if (res.status === 200) {
+      setLoading(false);
+      localStorage.setItem("token", res.data.token);
+      navigate("/admin/create-url");
     }
   }
   // Rest of your component...

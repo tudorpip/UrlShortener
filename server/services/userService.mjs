@@ -8,19 +8,14 @@ export async function register(req, res) {
   const password = req.body.password;
   const email = req.body.email;
   console.log(1);
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = await UserModel.findOne({ where: { email: email } });
-
+  if (!username || !password || !email) {
+    return res.status(400).json({ error: "All fields must be completed" });
+  }
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
   const isValidEmail = regex.test(email);
   const isValidPassword = passwordRegex.test(password);
 
-  if (user !== null) {
-    console.log(2);
-    return res.status(400).json({ error: "Unable to create account" });
-  }
   if (username === "") {
     return res.status(400).json({ error: "Unable to create account" });
   }
@@ -31,15 +26,28 @@ export async function register(req, res) {
     console.log(2);
     return res.status(400).json({ error: "Invalid password format" });
   }
-  console.log(3);
-  console.log(username, hashedPassword);
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = await UserModel.findOne({ where: { email: email } }).catch(
+    (err) => {
+      console.error(err);
+      return null;
+    }
+  );
+  if (user) {
+    return res.status(409).json({ error: "Email is already used" });
+  }
   const registeredUser = await UserModel.create({
     username: username,
     email: email,
     password: hashedPassword,
   }).catch((error) => {
-    return res.status(500);
+    console.error(error);
+    return null;
   });
+  if (!registeredUser) {
+    return res.status(500).json({ error: "Unable to create account" });
+  }
   const userObject = registeredUser.toJSON();
   delete userObject.password;
   const result = userObject;
@@ -53,13 +61,14 @@ export async function logout(req, res) {
   const token = req.headers.authorization.split(" ")[1];
   const session = await ActiveSessionModel.findOne({
     where: { token: token },
+  }).catch((error) => {
+    return null;
   });
-  if (session) {
-    await session.destroy();
-    return res.sendStatus(200);
-  } else {
-    return res.sendStatus(401);
+  if (!session) {
+    return res.status(500).json({ error: "Unable to find session" });
   }
+  await session.destroy();
+  return res.sendStatus(200);
 }
 
 export async function login(req, res) {
@@ -71,7 +80,8 @@ export async function login(req, res) {
   console.log("rara1");
   const user = await UserModel.findOne({ where: { email: email } }).catch(
     (err) => {
-      return res.status(500).send("Something went wrong");
+      console.error(err);
+      return null;
     }
   );
   if (!user) {
@@ -85,12 +95,16 @@ export async function login(req, res) {
     const token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, {
       expiresIn: "1d",
     });
-    ActiveSessionModel.create({
+    const curentSession = ActiveSessionModel.create({
       token: token,
       userId: user.id,
     }).catch((err) => {
-      return res.status(500).json({ error: "Unable to create active session" });
+      console.error(err);
+      return null;
     });
+    if (!curentSession) {
+      res.status(500).json({ error: "Unable to create active session" });
+    }
     return res.status(200).json({
       message: "User authenticated.",
       token: token,

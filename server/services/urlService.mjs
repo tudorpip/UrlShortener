@@ -4,7 +4,10 @@ import { nanoid } from "nanoid";
 export async function getURL(req, res) {
   console.log(req.params.id);
   const id = req.params.id;
-  const url = await UrlModel.findOne({ where: { id: id } });
+  const url = await UrlModel.findOne({ where: { id: id } }).catch((err) => {
+    console.error(err);
+    return null;
+  });
   if (!url) {
     return res.status(404).send("URL not found");
   }
@@ -15,6 +18,7 @@ export async function getAllURLs(req, res) {
   const userId = req.userId;
   const urls = await UrlModel.findAll({ where: { userId: userId } }).catch(
     (error) => {
+      console.error(error);
       return res.status(500).send("Internal Server Error");
     }
   );
@@ -35,8 +39,12 @@ export async function createURL(req, res) {
     userId: req.userId,
     url: url,
   }).catch((error) => {
-    return res.status(500).send("Internal Server Error");
+    console.error(error);
+    return null;
   });
+  if (!createURL) {
+    return res.status(500).send("Internal Server Error");
+  }
   console.log(createdUrl);
   return res.status(200).json({ url: uuid });
 }

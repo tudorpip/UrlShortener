@@ -16,22 +16,24 @@ const CreateUrl: FC = () => {
   async function generateUrl(url: string) {
     setSufixUrl("");
     setLoding(true);
-    console.log(1);
-    try {
-      const resp = await createUrl(url);
-      console.log(2);
-      setSufixUrl(resp.data.url);
-      console.log(resp.data);
-    } catch (error) {
+
+    const resp = await createUrl(url).catch((error) => {
+      return null;
+    });
+    if (!resp) {
       setUrl("");
       setError("Invalid URL provided");
-      console.log(error);
-    } finally {
+      console.error(error);
       setLoding(false);
+      return;
     }
+    console.log(2);
+    setSufixUrl(resp.data.url);
+    setLoding(false);
   }
   const [url, setUrl] = useState<string>("");
   const [error, setError] = useState<string>("");
+  
   const baseURL = ApiURL;
   const endpoint = "/url/";
   const fullURL = baseURL + endpoint;
@@ -57,18 +59,20 @@ const CreateUrl: FC = () => {
             Get Short URL
           </Button>
           {sufixUrl !== "" && (
-            <div className="flex-row display-flex justify-content-center d-flex mt-4">
+            <div className="flex-column display-flex justify-content-center d-flex mt-4">
               <h3 className="me-3">This is your new short URL:</h3>
-              <h3 style={{ color: "white" }}>{`${fullURL}${sufixUrl}`}</h3>
-              <Button
-                color="success"
-                style={{ height: "40px", marginLeft: "30px" }}
-                onClick={() => {
-                  navigator.clipboard.writeText(`${fullURL}${sufixUrl}`);
-                }}
-              >
-                Copy
-              </Button>
+              <div className="flex-row display-flex justify-content-center d-flex mt-4">
+                <h3 style={{ color: "white" }}>{`${fullURL}${sufixUrl}`}</h3>
+                <Button
+                  color="success"
+                  style={{ height: "40px", marginLeft: "30px" }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(`${fullURL}${sufixUrl}`);
+                  }}
+                >
+                  Copy
+                </Button>
+              </div>
             </div>
           )}
           {error && (

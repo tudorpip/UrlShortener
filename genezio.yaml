@@ -1,9 +1,12 @@
-name: urlShortener-client
+# The name of the project.
+name: urlShortener
+# The region where the project is deployed. Available regions: us-east-1, eu-central-1
 region: us-east-1
+# The version of the Genezio YAML configuration to parse.
 frontend:
   # Specifies the path of your code.
-  path: .
-  publish: build
+  path: ./client
+  publish: dist
   # Specifies the folder where the build is located.
   # This is the folder that will be deployed.
   # The frontend will be deployed to `cool-capybara.app.genez.io`
@@ -13,5 +16,16 @@ frontend:
     # The command to build your frontend project. This is custom to your project.
     # It must to populate the specified `publish` folder with a `index.html` file.
     {}
-  subdomain: yellow-furious-swallow
+  subdomain: url
+backend:
+  path: ./server
+  language:
+    name: js
+    packageManager: npm
+  functions:
+    - name: urlShortener
+      path: ./
+      handler: handler
+      entry: app.mjs
+      type: aws
 yamlVersion: 2

@@ -7,11 +7,13 @@ import { NavBar } from "../components/NavBar";
 import { createUrl } from "../network/ApiAxios";
 
 const ApiURL = import.meta.env.VITE_DEPLOYED_URL;
+
 const CreateUrl: FC = () => {
   const [sufixUrl, setSufixUrl] = useState<String>("");
   const [loading, setLoding] = useState<boolean>(false);
   console.log(ApiURL);
-  async function getCurrentNumber(url: string) {
+
+  async function generateUrl(url: string) {
     setSufixUrl("");
     setLoding(true);
     console.log(1);
@@ -50,7 +52,7 @@ const CreateUrl: FC = () => {
           <Button
             color="dark"
             style={{ height: "56px" }}
-            onClick={() => getCurrentNumber(url)}
+            onClick={() => generateUrl(url)}
           >
             Get Short URL
           </Button>

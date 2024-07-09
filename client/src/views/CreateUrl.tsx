@@ -2,13 +2,10 @@ import "../assets/css/App.css";
 import { useState } from "react";
 import { Button, Spinner } from "reactstrap";
 import { FC } from "react";
-import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavBar } from "../components/NavBar";
 import { createUrl } from "../network/ApiAxios";
-export interface NavBarProps {
-  children?: React.ReactNode;
-}
+
 const ApiURL = import.meta.env.VITE_DEPLOYED_URL;
 const CreateUrl: FC = () => {
   const [sufixUrl, setSufixUrl] = useState<String>("");
@@ -18,13 +15,21 @@ const CreateUrl: FC = () => {
     setSufixUrl("");
     setLoding(true);
     console.log(1);
-    const resp = await createUrl(url);
-    console.log(resp);
-    setLoding(false);
-    setSufixUrl(resp.data.url);
-    console.log(resp.data);
+    try {
+      const resp = await createUrl(url);
+      console.log(2);
+      setSufixUrl(resp.data.url);
+      console.log(resp.data);
+    } catch (error) {
+      setUrl("");
+      setError("Invalid URL provided");
+      console.log(error);
+    } finally {
+      setLoding(false);
+    }
   }
   const [url, setUrl] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const baseURL = ApiURL;
   const endpoint = "/url/";
   const fullURL = baseURL + endpoint;
@@ -37,7 +42,10 @@ const CreateUrl: FC = () => {
           <input
             className="my-input"
             value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            onChange={(e) => {
+              setUrl(e.target.value);
+              setError("");
+            }}
           ></input>
           <Button
             color="dark"
@@ -60,6 +68,11 @@ const CreateUrl: FC = () => {
                 Copy
               </Button>
             </div>
+          )}
+          {error && (
+            <h3 className="text-center" style={{ color: "red" }}>
+              {error}
+            </h3>
           )}
           {loading === true && (
             <div

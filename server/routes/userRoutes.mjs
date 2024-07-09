@@ -8,7 +8,7 @@ import {
 import { verifyToken } from "../middleware/verifyToken.mjs";
 const router = express.Router();
 
-router.post("/create", register);
+router.post("/register", register);
 
 router.post("/login", login);
 

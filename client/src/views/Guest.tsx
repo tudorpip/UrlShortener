@@ -1,15 +1,10 @@
 import "../assets/css/App.css";
 import { FC } from "react";
-import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { NavBar } from "../components/NavBar";
-// export const logo = require("../assets/images/GenURL.png") as string;
-import logo from "../assets/images/GenURL.png";
-export interface NavBarProps {
-  children?: React.ReactNode;
-}
+
 const Guest: FC = () => {
   const navigate = useNavigate();
   return (

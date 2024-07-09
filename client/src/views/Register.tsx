@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Logo } from "../components/Logo";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -14,7 +14,6 @@ import {
   Spinner,
 } from "reactstrap";
 import { register } from "../network/ApiAxios";
-import { AxiosError } from "axios";
 export function Register() {
   const [loading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
@@ -35,14 +34,22 @@ export function Register() {
         setLoading(false);
         navigate("/auth/login");
       }
-      if (res instanceof AxiosError && res.response?.status !== 500) {
-        setLoading(false);
-        setError("Email is already used");
-      }
     } catch (error: any) {
       setLoading(false);
+      console.log(error.message);
+      if (error.message === "Network Error") {
+        setError("Our servers are currently down, please try again later...");
+        return;
+      }
       if (error.response?.status !== 500) {
-        setError("Email is already used");
+        const errorData = error.response?.data.error;
+        if (errorData === "Invalid password format") {
+          setError(
+            "Invalid password! Password must have at least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number"
+          );
+        } else {
+          setError("Email is already used");
+        }
         return;
       }
 
@@ -132,7 +139,10 @@ export function Register() {
           </Col>
         </Row>
         {error !== "" && (
-          <h3 className="text-center mt-5" style={{ color: "red" }}>
+          <h3
+            className="text-center mt-5"
+            style={{ color: "red", fontSize: "16px" }}
+          >
             {`${error}`}
           </h3>
         )}

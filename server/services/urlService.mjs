@@ -13,37 +13,30 @@ export async function getURL(req, res) {
 
 export async function getAllURLs(req, res) {
   const userId = req.userId;
-  try {
-    const urls = await UrlModel.findAll({ where: { userId: userId } });
-    res.json(urls);
-  } catch (error) {
-    console.error("Error fetching URLs:", error);
-    res.status(500).send("Internal Server Error");
-  }
+  const urls = await UrlModel.findAll({ where: { userId: userId } }).catch(
+    (error) => {
+      return res.status(500).send("Internal Server Error");
+    }
+  );
+  return res.json(urls);
 }
 
 export async function createURL(req, res) {
-  console.log(req.userId);
-  console.log("caca");
-  try {
-    const url = req.body.url;
-    console.log("URL IS 999" + url);
-    var newUrl;
-    try {
-      const uuid = nanoid(7);
-      const createdUrl = await UrlModel.create({
-        id: uuid,
-        userId: req.userId,
-        url: url,
-      });
-      newUrl = createdUrl;
-    } catch (error) {
-      console.error("Error inserting URL:", error);
-      url = null;
-    }
-    res.status(200).json({ url: newUrl.id });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error });
+  const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z]{2,6})([\/\w\.-]*)*\/?/;
+  const url = req.body.url;
+  console.log("URL IS 999" + url);
+  const validUrl = urlRegex.test(url);
+  if (!validUrl) {
+    return res.status(400).send("Invalid URL");
   }
+  const uuid = nanoid(7);
+  const createdUrl = await UrlModel.create({
+    id: uuid,
+    userId: req.userId,
+    url: url,
+  }).catch((error) => {
+    return res.status(500).send("Internal Server Error");
+  });
+  console.log(createdUrl);
+  return res.status(200).json({ url: uuid });
 }

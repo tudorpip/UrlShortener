@@ -10,7 +10,7 @@ export async function verifyToken(req, res, next) {
   }
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
-    if (err) return res.sendStatus(403).send("Invalid token");
+    if (err) return res.sendStatus(401).send("Invalid token");
     req.userId = user.id;
     next();
   });

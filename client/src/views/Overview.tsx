@@ -1,32 +1,23 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Table, Spinner } from "reactstrap";
 import { getAllUrls } from "../network/ApiAxios";
+import { TableEntry } from "../models/tableEntry";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export function Overview() {
-  const ApiURL = import.meta.env.VITE_DEPLOYED_URL;
-  const baseURL = ApiURL;
-  const endpoint = "/";
-  const fullURL = baseURL + endpoint;
+  const ApiURL = import.meta.env.VITE_DEPLOYED_URL + "/";
   const navigator = useNavigate();
-  interface UrlData {
-    originalUrl: string;
-    shortenedUrl: string;
-  }
-  const [tableData, setTableData] = useState<UrlData[]>([]);
+
+  const [tableData, setTableData] = useState<TableEntry[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigator("/auth/login");
-      }
       const resp = await getAllUrls();
       const data = await resp.data;
       const newEntries = data.map((element: any) => {
-        const shortUrl = baseURL + "/url/" + element.id;
+        const shortUrl = ApiURL + "url/" + element.id;
         return {
           originalUrl: element.url,
           shortenedUrl: shortUrl,
@@ -36,7 +27,7 @@ export function Overview() {
       console.log(newEntries);
     };
     fetchData().finally(() => setIsLoading(false));
-  }, [fullURL, baseURL, navigator]);
+  }, [ApiURL, navigator]);
   return isLoading ? (
     <div
       style={{

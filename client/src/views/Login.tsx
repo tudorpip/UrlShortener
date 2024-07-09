@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AxiosError } from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Logo } from "../components/Logo";
 import { logInUser } from "../network/ApiAxios";
@@ -22,7 +21,7 @@ export function Login() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
-  async function handleSubmit(e: any) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (password === "" || email === "") {
       setError("All fields are required...");

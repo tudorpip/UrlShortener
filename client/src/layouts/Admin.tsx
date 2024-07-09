@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { validateToken } from "../network/ApiAxios";
-import { AxiosError } from "axios";
 export default function Admin(props: { element: React.ReactNode }) {
   const navigate = useNavigate();
   React.useEffect(() => {

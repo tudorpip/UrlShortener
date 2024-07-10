@@ -43,7 +43,6 @@ export function Login() {
       setError("Invalid credentials provided");
       return;
     }
-    console.log(res);
     if (res.status === 200) {
       setLoading(false);
       localStorage.setItem("token", res.data.token);

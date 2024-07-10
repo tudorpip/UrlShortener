@@ -7,7 +7,6 @@ export async function register(req, res) {
   const username = req.body.username;
   const password = req.body.password;
   const email = req.body.email;
-  console.log(1);
   if (!username || !password || !email) {
     return res.status(400).json({ error: "All fields must be completed" });
   }
@@ -23,7 +22,6 @@ export async function register(req, res) {
     return res.status(400).json({ error: "Invalid email format" });
   }
   if (!isValidPassword) {
-    console.log(2);
     return res.status(400).json({ error: "Invalid password format" });
   }
 
@@ -51,7 +49,6 @@ export async function register(req, res) {
   const userObject = registeredUser.toJSON();
   delete userObject.password;
   const result = userObject;
-  console.log(result);
   if (result === null) {
     return res.status(500).json({ error: "Unable to create account" });
   }
@@ -75,9 +72,8 @@ export async function login(req, res) {
   const email = req.body.email;
   const password = req.body.password;
   if (email === "" || password === "") {
-    return res.status(400).send("Invalid email/password.");
+    return res.status(401).send("Invalid email/password.");
   }
-  console.log("rara1");
   const user = await UserModel.findOne({ where: { email: email } }).catch(
     (err) => {
       console.error(err);
@@ -85,11 +81,11 @@ export async function login(req, res) {
     }
   );
   if (!user) {
-    return res.status(400).send("Invalid email/password.");
+    return res.status(401).send("Invalid email/password.");
   }
   const isPasswordMatch = await bcrypt.compare(password, user.password);
   if (!isPasswordMatch) {
-    return res.status(400).send("Invalid email/password.");
+    return res.status(401).send("Invalid email/password.");
   }
   if (user) {
     const token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, {

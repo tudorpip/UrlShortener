@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Table, Spinner } from "reactstrap";
 import { getAllUrls } from "../network/ApiAxios";
 import { TableEntry } from "../models/tableEntry";
+import { Url } from "../models/url";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export function Overview() {
@@ -16,7 +17,7 @@ export function Overview() {
       setIsLoading(true);
       const resp = await getAllUrls();
       const data = await resp.data;
-      const newEntries = data.map((element: any) => {
+      const newEntries = data.map((element: Url) => {
         const shortUrl = ApiURL + "url/" + element.id;
         return {
           originalUrl: element.url,
@@ -24,7 +25,6 @@ export function Overview() {
         };
       });
       setTableData(newEntries);
-      console.log(newEntries);
     };
     fetchData().finally(() => setIsLoading(false));
   }, [ApiURL, navigator]);

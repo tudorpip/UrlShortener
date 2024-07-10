@@ -1,7 +1,6 @@
 import "../assets/css/App.css";
 import { useState } from "react";
 import { Button, Spinner } from "reactstrap";
-import { FC } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavBar } from "../components/NavBar";
 import { createUrl } from "../network/ApiAxios";
@@ -11,13 +10,12 @@ const ApiURL = import.meta.env.VITE_DEPLOYED_URL;
 function CreateUrl() {
   const [sufixUrl, setSufixUrl] = useState<String>("");
   const [loading, setLoding] = useState<boolean>(false);
-  console.log(ApiURL);
 
   async function generateUrl(url: string) {
     setSufixUrl("");
     setLoding(true);
 
-    const resp = await createUrl(url).catch((error) => {
+    const resp = await createUrl(url).catch(() => {
       return null;
     });
     if (!resp) {
@@ -27,7 +25,6 @@ function CreateUrl() {
       setLoding(false);
       return;
     }
-    console.log(2);
     setSufixUrl(resp.data.url);
     setLoding(false);
   }

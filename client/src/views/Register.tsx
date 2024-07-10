@@ -40,7 +40,6 @@ export function Register() {
     }
     if (res instanceof AxiosError) {
       setLoading(false);
-      console.log(res.message);
       if (res.message === "Network Error") {
         setError("Our servers are currently down, please try again later...");
         return;
@@ -87,7 +86,7 @@ export function Register() {
       </Spinner>
     </div>
   ) : (
-    <body>
+    <>
       <NavBar />
       <Container className="md-5 mt-5 small-container">
         <h1 className="text-center">Sign up</h1>
@@ -155,7 +154,7 @@ export function Register() {
           </h3>
         )}
       </Container>
-    </body>
+    </>
   );
 }
 function NavBar() {

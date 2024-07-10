@@ -4,7 +4,6 @@ import { validateToken } from "../network/ApiAxios";
 export default function Admin(props: { element: React.ReactNode }) {
   const navigate = useNavigate();
   React.useEffect(() => {
-    console.log("tata");
     if (localStorage.getItem("token") == null) {
       localStorage.clear();
       navigate("/auth/login");

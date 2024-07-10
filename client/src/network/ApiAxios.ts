@@ -1,7 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 
-console.log(import.meta.env.VITE_DEPLOYED_URL);
-
 const instance = axios.create({ baseURL: import.meta.env.VITE_DEPLOYED_URL });
 
 instance.interceptors.request.use(async (config) => {

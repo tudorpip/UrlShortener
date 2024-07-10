@@ -2,7 +2,6 @@ import { UrlModel } from "../models/url.mjs";
 import { nanoid } from "nanoid";
 
 export async function getURL(req, res) {
-  console.log(req.params.id);
   const id = req.params.id;
   const url = await UrlModel.findOne({ where: { id: id } }).catch((err) => {
     console.error(err);
@@ -28,7 +27,6 @@ export async function getAllURLs(req, res) {
 export async function createURL(req, res) {
   const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z]{2,6})([\/\w\.-]*)*\/?/;
   const url = req.body.url;
-  console.log("URL IS 999" + url);
   const validUrl = urlRegex.test(url);
   if (!validUrl) {
     return res.status(400).send("Invalid URL");
@@ -45,6 +43,5 @@ export async function createURL(req, res) {
   if (!createURL) {
     return res.status(500).send("Internal Server Error");
   }
-  console.log(createdUrl);
   return res.status(200).json({ url: uuid });
 }

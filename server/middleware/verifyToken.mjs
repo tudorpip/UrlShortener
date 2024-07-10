@@ -2,7 +2,6 @@ import { ActiveSessionModel } from "../models/activeSession.mjs";
 import jwt from "jsonwebtoken";
 export async function verifyToken(req, res, next) {
   const token = req.headers.authorization.split(" ")[1];
-  console.log(token);
   if (token == null) return res.sendStatus(401);
   const session = await ActiveSessionModel.findOne({
     where: { token: token },

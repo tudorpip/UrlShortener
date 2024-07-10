@@ -1,5 +1,4 @@
 import "../assets/css/App.css";
-import { FC } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "reactstrap";
 import { useNavigate } from "react-router-dom";

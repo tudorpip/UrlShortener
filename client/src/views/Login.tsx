@@ -29,7 +29,7 @@ export function Login() {
       return;
     }
     setLoading(true);
-    const res = await logInUser(email, password).catch((err) => {
+    const res = await logInUser(email, password).catch(() => {
       console.error("Error:", error);
       setError("Something went wrong, please try again later...");
       return null;

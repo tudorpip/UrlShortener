@@ -2,7 +2,11 @@
 
 <p align="center"><img src="https://socialify.git.ci/tudorpip/UrlShortener/image?font=Inter&amp;language=1&amp;name=1&amp;owner=1&amp;stargazers=1&amp;theme=Auto" alt="project-image"></p>
 
-<p id="description">The URL Shortener Project is a dynamic and efficient web application designed to simplify the process of shortening URLs. Built with a modern tech stack this project combines a React-based frontend with an Express.js backend offering a seamless and interactive user experience for creating and managing shortened URLs. The application is structured to ensure ease of use with a focus on providing a straightforward interface for users to input and shorten their URLs enhancing shareability and management.</p>
+# URL Shortener Project✍️
+
+The **URL Shortener Project** is a dynamic and efficient web application designed to simplify the process of shortening URLs. Built with a modern tech stack, this project combines a React-based frontend with an Express.js backend, offering a seamless and interactive user experience for creating and managing shortened URLs. 
+
+The application is structured to ensure ease of use, with a focus on providing a straightforward interface for users to input and shorten their URLs, enhancing shareability and management.</p>
 
 # 🚀 Demo
 

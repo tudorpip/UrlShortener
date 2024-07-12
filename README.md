@@ -1,90 +1,99 @@
-# URL Shortener Project
+<h1 align="center" id="title">Url Shortener</h1>
 
-This project offers a comprehensive solution for shortening URLs, featuring a user-friendly frontend built with React and a robust backend service powered by Express.js. It's designed to transform lengthy URLs into short, manageable links, making it easier to share and manage them.
+<p align="center"><img src="https://socialify.git.ci/tudorpip/UrlShortener/image?font=Inter&amp;language=1&amp;name=1&amp;owner=1&amp;stargazers=1&amp;theme=Auto" alt="project-image"></p>
 
-## Features
+<p id="description">The URL Shortener Project is a dynamic and efficient web application designed to simplify the process of shortening URLs. Built with a modern tech stack this project combines a React-based frontend with an Express.js backend offering a seamless and interactive user experience for creating and managing shortened URLs. The application is structured to ensure ease of use with a focus on providing a straightforward interface for users to input and shorten their URLs enhancing shareability and management.</p>
 
-- **React Frontend**: A sleek, responsive interface for users to shorten and manage URLs.
-- **Express Backend**: A powerful server handling URL shortening logic and database interactions.
-- **PostgreSQL Database**: Stores original and shortened URLs for quick retrieval.
-- **Easy Deployment**: Supports deployment using Genezio for the backend, ensuring a smooth transition from development to production.
+# 🚀 Demo
 
-## Project Structure
+[https://url.app.genez.io/](https://url.app.genez.io/)
 
-- `frontend/`: The React application providing the user interface.
-  - `src/`: Source code including React components and styles.
-  - `public/`: Public assets like the HTML template and icons.
-- `server/`: The Express.js backend server.
-  - `app.mjs`: The entry point for the backend server.
-  - `db/`: Database connection and setup scripts.
-  - `models/`: Definitions of database models.
-  - `services/`: Business logic for URL shortening and management.
+<h2>Project Screenshots:</h2>
 
-## Getting Started
+<img src="https://i.gyazo.com/ed37ceba7181c32917082e368ae25228.png" alt="project-screenshot" width="240" height="100/">
 
-### Prerequisites
+<img src="https://i.gyazo.com/bfb78f6807af575a22a895352673794d.png" alt="project-screenshot" width="230" height="100/">
 
-- Node.js and npm must be installed.
-- A PostgreSQL database should be set up (refer to the `.env` file for connection details).
+<img src="https://i.gyazo.com/d509db59c7ae39c354dcc91d2fb92bca.png" alt="project-screenshot" width="230" height="100/">
 
-### Setup
+  
+  
+# 🧐 Features
 
-1. Clone the repository.
-2. For both `frontend/` and `server/` directories, run `npm install` in separate terminal windows to install dependencies.
+This project boasts a range of impressive features designed to provide a comprehensive URL shortening service. Below are some of the key highlights:
 
-### Running the Application
+## Sleek Responsive Interface
 
-#### Frontend
+- **Technology**: Built with React, ensuring a dynamic and responsive user experience.
+- **Implementation**: The `client/` directory structure and dependencies such as `react` and `react-dom` in the `client/package.json` file underline the use of React for frontend development.
 
-Navigate to the `frontend/` directory and run:
+## Express Backend
 
-```sh
-npm start
+- **Functionality**: Manages URL shortening logic and database interactions efficiently.
+- **Technology Stack**: Utilizes Express.js, a robust server framework for Node.js.
+- **Evidence**: The `server/` directory's structure and the inclusion of `express` in the `server/package.json` dependencies highlight the backend's foundation.
+
+## PostgreSQL Database
+
+- **Database Management**: Employs PostgreSQL for storing original and shortened URLs, facilitating quick data retrieval.
+- **ORM Utilization**: Incorporates Sequelize as an ORM (Object-Relational Mapping) tool, simplifying database interactions.
+- **Configuration**: The presence of `pg` and `sequelize` in the `server/package.json` dependencies confirms the use of PostgreSQL and Sequelize.
+
+## Easy Deployment
+
+- **Deployment Tool**: Leverages Genezio for straightforward deployment, particularly beneficial for serverless applications.
+- **Configuration and Documentation**: The `genezio.yaml` file in the `server/` directory, along with deployment instructions in the `README.md`, guide the deployment process.
+
+These features collectively make the project not only a powerful tool for URL management but also a showcase of modern web development practices and technologies.
+
+# 🛠️ Installation Steps:
+
+<p>1. Clone the Repository</p>
+
+```
+git clone {repository-url}
 ```
 
-This command runs the React app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<p>2. Install Dependencies</p>
 
-#### Backend
-
-Navigate to the `server/` directory and run:
-
-```sh
-npm start
+```
+npm install
 ```
 
-This starts the Express.js server on port 8080, ready to handle URL shortening requests.
+<p>3. Navigate to frontend directory</p>
 
-## Deployment
-
-### Backend with Genezio
-
-The backend can be easily deployed using Genezio, a deployment tool that simplifies the process of deploying serverless applications. The `genezio.yaml` file in the `server/` directory contains the necessary configuration.
-
-To deploy with Genezio, ensure you have Genezio CLI installed and configured, then run:
-
-```sh
-genezio deploy --env .env
+```
+cd client
 ```
 
-This command deploys your Express.js application as a serverless function to the cloud, making it accessible worldwide.
+<p>4. Run the client</p>
 
-### Frontend
+```
+npm run --dev 
+```
 
-The frontend can be deployed using your preferred static site hosting service.
+<p>5. Navigate to the server directory</p>
 
-## Environment Variables
+```
+cd server
+```
 
-Ensure the following environment variables are set:
+<p>6. Start the server</p>
 
-- `POSTGRES_URL`: Connection string for the PostgreSQL database.
-- `DEPLOYED_URL`: The URL where the backend is deployed.
+```
+node app.mjs
+```
 
-## Contributing
+<p>7. Deploy from root directory</p>
+
+```
+genezio deploy --env server/.env
+```
+
+# 🍰 Contribution Guidelines:
 
 Contributions are welcome! Please feel free to submit a pull request or open an issue.
 
-## License
+# 🛡️ License:
 
-This project is open source and available under the [MIT License](LICENSE).
-
-This README provides a comprehensive overview of the URL Shortener Project, including its features, structure, setup instructions, and deployment details, with a special highlight on deploying the Express backend using Genezio.
+This project is licensed under the MIT License

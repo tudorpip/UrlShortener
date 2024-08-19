@@ -13,9 +13,9 @@ frontend:
   # If not provided, a random one is assigned.
   # Scripts will run in the specified `path` folder.
   scripts:
+    deploy: npm run build
     # The command to build your frontend project. This is custom to your project.
     # It must to populate the specified `publish` folder with a `index.html` file.
-    {}
   subdomain: url
 backend:
   path: ./server
